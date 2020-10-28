@@ -31,18 +31,19 @@ import { ChartsModule } from 'ng2-charts';
     UpgradeModule,
     ChartsModule
   ],
-  declarations: [KPITrendWidget, KPITrendWidgetConfig],      // 1.
+  declarations: [KPITrendWidget, KPITrendWidgetConfig],
   entryComponents: [KPITrendWidget, KPITrendWidgetConfig],
   providers: [{
-    provide: HOOK_COMPONENTS,                         // 2.
+    provide: HOOK_COMPONENTS,
     multi: true,
     useValue: [
       {
-        id: 'gp.kpitrend.widget',                        // 3. 
-        label: 'KPI Trend Widget',
+        id: 'com.softwareag.globalpresales.kpitrendwidget',
+        label: 'KPI Trend',
         description: 'This widget shows the current measurement and how its value is in respect to the average value of the measurements for a selection interval. It also shows all the measurements in realtime in the chart.',
-        component: KPITrendWidget,                         // 4.
-        configComponent: KPITrendWidgetConfig
+        component: KPITrendWidget,
+        configComponent: KPITrendWidgetConfig,
+        previewImage: require("./assets/img-preview.png")
       }
     ]
   }],
