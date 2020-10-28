@@ -1,0 +1,67 @@
+
+<c8y-form-group>
+<!-- KPI title -->
+<label for="kpi-title" translate>Title</label>
+<input type="text" name="kpi-title" id="kpi-title" [(ngModel)]="widgetInfo.metadata.title" class="form-control" (change)="updateConfig($event)" />
+
+<!-- Upload icon-->
+<label for="kpi-icon" translate style="margin-top: 25px;">
+      Upload icon      
+</label>
+<input type="file" name="kpi-icon" class="form-control" alt="Icon" (change)="updateIconInConfig($event)" />
+
+<!-- Aggregation interval -->
+<label for="aggregation-interval" translate style="margin-top: 25px;">Aggregation interval</label>
+<select class="form-control" name="aggregation-interval" [(ngModel)]="widgetInfo.aggregation.interval" (change)="updateConfig($event)">
+      <option value = "hourly" [selected]="widgetInfo.aggregation.interval === 'hourly'">Hourly</option>
+      <option value = "daily" [selected]="widgetInfo.aggregation.interval === 'daily'">Daily</option>
+      <option value = "weekly" [selected]="widgetInfo.aggregation.interval === 'weekly'">Weekly</option>
+</select>
+
+<!-- Measurement type-->
+<label for="measurement-type" translate style="margin-top: 25px;">
+      Measurement type
+</label>
+<input type="text" name="measurement-type" id="measurement-type" class="form-control"
+      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.measurement.type"
+      placeholder='Type' />
+
+<!-- Measurement fragment type -->
+<label for="measurement-fragment" translate style="margin-top: 25px;">
+      Measurement fragment type
+      </label>
+<input type="text" name="measurement-fragment" id="measurement-fragment"
+      class="form-control" (change)="updateConfig($event)"
+      [(ngModel)]="widgetInfo.measurement.fragment" placeholder='Fragment' />
+
+<!-- Measurement fragment series -->
+<label for="measurement-series" translate style="margin-top: 25px;">
+      Measurement fragment series
+      </label>
+<input type="text" name="measurement-series" id="measurement-series" class="form-control"
+      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.measurement.series"
+      placeholder='Series' />
+
+<!-- Chart height -->
+<label for="measurement-series" translate style="margin-top: 25px;">
+      Chart height (in pixels)
+      </label>
+<input type="number" name="chart-height" id="chart-height" class="form-control"
+      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.chart.height"/>
+
+<!-- Chart color -->
+<label for="measurement-series" translate style="margin-top: 25px;">
+      Chart color (in hex)
+      </label>
+<input type="text" name="chart-color" id="chart-color" class="form-control"
+      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.chart.color" />
+
+<!-- Chart data points count -->
+<label for="measurement-series" translate style="margin-top: 25px;">
+      Chart datapoints count
+      </label>
+<input type="number" name="chart-datapointcount" id="chart-datapointcount" class="form-control"
+      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.chart.datapointCount" />
+
+
+</c8y-form-group>
