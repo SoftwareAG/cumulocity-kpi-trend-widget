@@ -17,7 +17,23 @@ export class KPITrendWidgetConfig implements OnInit {
     measurement: {
       type: '',
       fragment: '',
-      series: ''
+      series: '',
+      color: '#B0B0B0',
+      threshold: {
+        enabled: 'false',
+        up: {
+          high: 10,
+          medium: 10
+        },
+        down: {
+          high: 10,
+          medium: 10
+        },
+        color :  {
+          high: '#FF0000',
+          medium: '#FFE000'
+        }
+      }
     },
     aggregation: {
       interval: 'hourly'

@@ -24,10 +24,19 @@ export class KPITrendWidget implements OnInit {
   private chartLabels = [];
   private lineChart;
   private chartDatapointsCount: number = 0;
+  private kpiColorDefault: string;
+  private kpiThresholdEnabled = false;
+  private kpiThresholdHighColor: string;
+  private kpiThresholdMediumColor: string;
+  private kpiThresholdUpHigh: number;
+  private kpiThresholdUpMedium: number;
+  private kpiThresholdDownHigh: number;
+  private kpiThresholdDownMedium: number;
 
   // Got public getters
   private kpiTitle: string = '';
   private kpiIcon: string = '';
+  private kpiColor: string = '';
   private chartHeight: string = '';
   private chartColor: string = '';
   
@@ -170,6 +179,92 @@ export class KPITrendWidget implements OnInit {
       console.log("Measurement fragment series is not provided. Will not be fetching any measurements.");
     }
 
+    // Get Measurement Color
+    this.kpiColorDefault = _.get(this.config, 'customwidgetdata.measurement.color');
+    if(this.kpiColorDefault === undefined || this.kpiColorDefault.indexOf('#') !== 0) {
+      console.log("KPI color is blank or does not begin with a #.");
+      this.kpiColorDefault = "#B0B0B0";
+      console.log("Default value for KPI color #B0B0B0 is being used.");
+    }
+    this.kpiColor = this.kpiColorDefault;
+
+
+    // Get Threshold Enabled
+    let measurementThresholdEnabled: string = _.get(this.config, 'customwidgetdata.measurement.threshold.enabled');
+    if(measurementThresholdEnabled !== undefined && measurementThresholdEnabled === 'true') {
+
+      this.kpiThresholdEnabled = true;
+
+      // Get Threshold up high
+      this.kpiThresholdUpHigh = _.get(this.config, 'customwidgetdata.measurement.threshold.up.high');
+      if(this.kpiThresholdUpHigh === undefined && this.kpiThresholdEnabled) {
+        this.kpiThresholdEnabled = false;
+        console.log("Measurement Threshold Up High is not defined. Measurment threshold checking is disabled.");
+      }
+       
+      //Get Threshold up medium
+      this.kpiThresholdUpMedium = _.get(this.config, 'customwidgetdata.measurement.threshold.up.medium');
+      if(this.kpiThresholdUpMedium === undefined && this.kpiThresholdEnabled) {
+        this.kpiThresholdEnabled = false;
+        console.log("Measurement Threshold Up Medium is not defined. Measurment threshold checking is disabled.");
+      }
+      
+      //Get Threshold down medium
+      this.kpiThresholdDownMedium = _.get(this.config, 'customwidgetdata.measurement.threshold.down.medium');
+      if(this.kpiThresholdDownMedium === undefined && this.kpiThresholdEnabled) {
+        this.kpiThresholdEnabled = false;
+        console.log("Measurement Threshold Down Medium is not defined. Measurment threshold checking is disabled.");
+      }
+
+      // Get Threshold down high
+      this.kpiThresholdDownHigh = _.get(this.config, 'customwidgetdata.measurement.threshold.down.high');
+      if(this.kpiThresholdDownHigh === undefined && this.kpiThresholdEnabled) {
+        this.kpiThresholdEnabled = false;
+        console.log("Measurement Threshold Down High is not defined. Measurment threshold checking is disabled.");
+      }
+
+      // Making sure Measurement Threshold Up Medium <= Measurement Threshold Up High
+      if(this.kpiThresholdUpMedium > this.kpiThresholdUpHigh && this.kpiThresholdEnabled) {
+        this.kpiThresholdEnabled = false;
+        console.log("Measurement Threshold Up Medium cannot be greater than Measurement Threshold Up High. Measurment threshold checking is disabled.");
+      }
+
+      // Making sure Measurement Threshold Down Medium >= Measurement Threshold Down High
+      if(this.kpiThresholdDownMedium < this.kpiThresholdDownHigh && this.kpiThresholdEnabled) {
+        this.kpiThresholdEnabled = false;
+        console.log("Measurement Threshold Down Medium cannot be less than Measurement Threshold Down High. Measurment threshold checking is disabled.");
+      }
+
+      // Making sure Measurement Threshold Up Medium > Measurement Threshold Down Medium
+      if(this.kpiThresholdUpMedium <= this.kpiThresholdDownMedium && this.kpiThresholdEnabled) {
+        this.kpiThresholdEnabled = false;
+        console.log("Measurement Threshold Down Medium cannot be greater than Measurment Threshold Up Medium. Measurment threshold checking is disabled.");
+      }
+
+      // Making sure Measurement Threshold Up High > Measurement Threshold Down High
+      if(this.kpiThresholdUpHigh <= this.kpiThresholdDownHigh && this.kpiThresholdEnabled) {
+        this.kpiThresholdEnabled = false;
+        console.log("Measurement Threshold Down High cannot be greater than Measurment Threshold Up High. Measurment threshold checking is disabled.");
+      }
+
+      //Get Threshold high color
+      this.kpiThresholdHighColor = _.get(this.config, 'customwidgetdata.measuremnt.threshold.color.high');
+      if(this.kpiThresholdHighColor === undefined || this.kpiThresholdHighColor.indexOf('#') !== 0) {
+        console.log("Measurement Threshold High color is blank or does not begin with a #.");
+        this.kpiThresholdHighColor = "#FF0000";
+        console.log("Default value for Measurement Threshold High color #FF0000 is being used.");
+      }
+
+      //Get Threshold medium color
+      this.kpiThresholdMediumColor = _.get(this.config, 'customwidgetdata.measuremnt.threshold.color.medium');
+      if(this.kpiThresholdMediumColor === undefined || this.kpiThresholdMediumColor.indexOf('#') !== 0) {
+        console.log("Measurement Threshold Medium color is blank or does not begin with a #.");
+        this.kpiThresholdMediumColor = "#FFE000";
+        console.log("Default value for Measurement Threshold Medium color #FFE000 is being used.");
+      }
+
+    }
+
     // Get KPI Title
     this.kpiTitle = _.get(this.config, 'customwidgetdata.metadata.title');
     if(this.kpiTitle === undefined || this.kpiTitle.length === 0) {
@@ -228,6 +323,10 @@ export class KPITrendWidget implements OnInit {
         this.currentMeasurementValue = this.allDataPoints[this.totalMeasurementsCount - 1];
         this.currentMeasurementUnit = oldMeasurementsResponse.data[this.totalMeasurementsCount - 1][measurementFragmentType][measurementFragmentSeries].unit;
         this.setPercentageAndText(oldMeasurementsAverage, this.currentMeasurementValue, aggregationInterval);
+
+        if(this.kpiThresholdEnabled) {
+          this.setThresholdColorForKPI();
+        }
       }
     }
 
@@ -285,7 +384,11 @@ export class KPITrendWidget implements OnInit {
         this.allDataPoints.push(this.currentMeasurementValue);
         let oldMeasurementsAverage = this.calculateMeasurementsAverage();
         this.setPercentageAndText(oldMeasurementsAverage, this.currentMeasurementValue, aggregationInterval);
-        
+
+        if(this.kpiThresholdEnabled) {
+          this.setThresholdColorForKPI();
+        }
+
         this.chartDataPoints.push(this.currentMeasurementValue);
         this.chartLabels.push("-");
         if(this.chartDataPoints.length > this.chartDatapointsCount) {
@@ -298,16 +401,34 @@ export class KPITrendWidget implements OnInit {
 
   }
 
-  public getIcon(): string {
+  private setThresholdColorForKPI(): void {
+    if(this.currentMeasurementValue <= this.kpiThresholdDownHigh) {
+      this.kpiColor = this.kpiThresholdHighColor;
+    } else if(this.currentMeasurementValue <= this.kpiThresholdDownMedium) {
+      this.kpiColor = this.kpiThresholdMediumColor;
+    } else if(this.currentMeasurementValue >= this.kpiThresholdUpHigh) {
+      this.kpiColor = this.kpiThresholdHighColor;
+    } else if(this.currentMeasurementValue >= this.kpiThresholdUpMedium) {
+      this.kpiColor = this.kpiThresholdMediumColor;
+    } else {
+      this.kpiColor = this.kpiColorDefault;
+    }
+  }
+
+  public getKPIIcon(): string {
     return this.kpiIcon;
   }
 
-  public getTitle(): string {
+  public getKPITitle(): string {
     return this.kpiTitle;
   }
 
   public getChartHeight(): string {
     return this.chartHeight;
+  }
+
+  public getKPIColor() {
+    return this.kpiColor;
   }
 
   public getUniqueIdForChart(): string {

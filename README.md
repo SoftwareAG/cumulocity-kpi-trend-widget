@@ -11,8 +11,8 @@ A widget that shows the current measurement in realtime and the chart based on s
 ### Deployment - as part of the Cumulocity IoT Cockpit application
 1. Clone the repository on your local machine using `git clone https://github.com/SoftwareAG/cumulocity-kpi-trend-widget.git`.
 2. Run `npm install` to install the module dependencies.
-3. Run `npm run build` to build the cockpit application.
-4. Run `npm run deploy` and follow the instructions to deploy the cockpit application on your tenant. This will include the widget also.
+3. Run `c8ycli build` to build the cockpit application.
+4. Run `c8ycli deploy` and follow the instructions to deploy the cockpit application on your tenant. This will include the widget also.
 
 ### Configuration - to view the KPI and trend Chart in the widget
 1. Make sure you have successfully installed or deployed the widget.
@@ -22,10 +22,10 @@ A widget that shows the current measurement in realtime and the chart based on s
 5. Fill in all the fields as required. `Measurement type`, `Measurement fragment type` and `Measurement fragment series` are mandatory fields to view the KPI and trend Chart.
 6. Click `Save` to add the widget on dashboard.
 
-### Development - to do the further enhancements locally
+### Development - to do the enhancements and testing locally
 1. Clone the repository on local machine using `git clone https://github.com/SoftwareAG/cumulocity-kpi-trend-widget.git`.
 2. Run `npm install` to download the module dependencies.
-3. Run `npm run start -u https://your_tenant_url` to start the server.
+3. Run `c8ycli server -u https://your_tenant_url` to start the server.
 4. Go to `http://localhost:9000/apps/cockpit/` in the browser to view and test your changes.
 5. (Optional) push the changes back to this repository.
 
