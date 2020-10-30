@@ -1,0 +1,13 @@
+{
+    "name": "KPI Trend",
+    "contextPath": "kpitrend-widget",
+    "key": "kpitrend-widget-application-key",
+    "contentSecurityPolicy": "default-src 'self'",
+    "icon": {
+      "class": "fa fa-puzzle-piece"
+    },
+    "manifest": {
+      "noAppSwitcher": true
+    }
+  }
+  

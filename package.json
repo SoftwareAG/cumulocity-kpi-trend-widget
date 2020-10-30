@@ -1,10 +1,14 @@
 {
-  "name": "cockpit",
+  "name": "kpitrend-widget",
+  "interleave": {
+    "dist\\bundle-src\\custom-widget.js": "kpitrend-widget-CustomWidget",
+    "dist/bundle-src/custom-widget.js": "kpitrend-widget-CustomWidget"
+  },
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "c8ycli server -u https://industrysolutions.cumulocity.com",
+    "start": "c8ycli server",
     "build": "c8ycli build",
     "deploy": "c8ycli deploy"
   },
@@ -30,17 +34,35 @@
     "chart.js": "2.9.3",
     "core-js": "3.4.0",
     "lodash": "4.17.20",
-    "ng2-charts": "^2.4.2",
+    "ng2-charts": "2.4.2",
     "rxjs": "6.4.0",
     "url-search-params-polyfill": "6.0.0",
     "zone.js": "0.9.1"
+  },
+  "peerDependencies": {
+    "@angular/common": "8.2.13",
+    "@angular/core": "8.2.13",
+    "@angular/forms": "8.2.13",
+    "@angular/http": "7.2.15",
+    "@angular/router": "8.2.13",
+    "@c8y/ngx-components": "1006.6.13"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.803.17",
     "@angular/compiler-cli": "8.2.13",
     "@angular/language-service": "8.2.13",
+    "@c8y/cli": "1006.6.13",
+    "css-loader": "3.5.3",
+    "gulp": "4.0.2",
+    "gulp-filter": "6.0.0",
+    "gulp-replace": "1.0.0",
+    "gulp-zip": "5.0.2",
+    "ng-packagr": "9.1.1",
     "typescript": "3.5.3",
-    "@c8y/cli": "1006.6.13"
+    "url-loader": "4.1.1",
+    "webpack": "4.43.0",
+    "webpack-cli": "3.3.11",
+    "webpack-external-import": "^2.2.3"
   },
   "c8y": {
     "application": {
