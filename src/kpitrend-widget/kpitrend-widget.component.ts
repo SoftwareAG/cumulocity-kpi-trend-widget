@@ -23,6 +23,7 @@ export class KPITrendWidget implements OnInit {
   private chartDataPoints = [];
   private chartLabels = [];
   private lineChart;
+  private chartType: string;
   private chartDatapointsCount: number = 0;
   private kpiColorDefault: string;
   private kpiThresholdEnabled = false;
@@ -284,6 +285,13 @@ export class KPITrendWidget implements OnInit {
     // Get Aggregation Interval
     const aggregationInterval: string = _.get(this.config, 'customwidgetdata.aggregation.interval');
 
+    // Chart type
+    this.chartType = _.get(this.config, 'customwidgetdata.chart.type');
+    if(this.chartType === undefined || this.chartType.length === 0) {
+      console.log("Chart type is blank. Setting it to its default type line.");
+      this.chartType = 'line';
+    }
+
     // Get Chart Height
     const chartHeight: number = _.get(this.config, 'customwidgetdata.chart.height');
     if(chartHeight !== undefined && chartHeight > 0) {
@@ -343,7 +351,7 @@ export class KPITrendWidget implements OnInit {
     }
 
     this.lineChart = new Chart(this.getUniqueIdForChart(), {
-      type: 'line',
+      type: this.chartType,
       data: {
         labels: this.chartLabels,
         datasets: [
@@ -361,6 +369,9 @@ export class KPITrendWidget implements OnInit {
           point: {
             radius: 0
           }
+        },
+        tooltips: {
+          enabled: false
         },
         maintainAspectRatio: false,
         scales: {

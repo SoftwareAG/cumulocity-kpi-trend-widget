@@ -100,6 +100,15 @@
 <input type="text" name="threshold-medium-color" id="threshold-medium-color" class="form-control"
       (change)="updateConfig($event)" [(ngModel)]="widgetInfo.measurement.threshold.color.medium" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'" />
 
+<!-- Chart type -->
+<label for="chart-type" translate style="margin-top: 25px;">
+      Chart type
+</label>
+<select class="form-control" name="chart-type" [(ngModel)]="widgetInfo.chart.type" (change)="updateConfig($event)">
+      <option value = "line" [selected]="widgetInfo.chart.type === 'line'">Line</option>
+      <option value = "bar" [selected]="widgetInfo.chart.type === 'bar'">Bar</option>
+</select>
+
 <!-- Chart height -->
 <label for="measurement-series" translate style="margin-top: 25px;">
       Chart height (in pixels)

@@ -39,6 +39,7 @@ export class KPITrendWidgetConfig implements OnInit {
       interval: 'hourly'
     },
     chart: {
+      type: 'line',
       height: 100,
       datapointCount: 100,
       color: '#1776BF'
