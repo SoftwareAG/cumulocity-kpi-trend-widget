@@ -248,7 +248,7 @@ export class KPITrendWidget implements OnInit {
       }
 
       //Get Threshold high color
-      this.kpiThresholdHighColor = _.get(this.config, 'customwidgetdata.measuremnt.threshold.color.high');
+      this.kpiThresholdHighColor = _.get(this.config, 'customwidgetdata.measurement.threshold.color.high');
       if(this.kpiThresholdHighColor === undefined || this.kpiThresholdHighColor.indexOf('#') !== 0) {
         console.log("Measurement Threshold High color is blank or does not begin with a #.");
         this.kpiThresholdHighColor = "#FF0000";
@@ -256,7 +256,7 @@ export class KPITrendWidget implements OnInit {
       }
 
       //Get Threshold medium color
-      this.kpiThresholdMediumColor = _.get(this.config, 'customwidgetdata.measuremnt.threshold.color.medium');
+      this.kpiThresholdMediumColor = _.get(this.config, 'customwidgetdata.measurement.threshold.color.medium');
       if(this.kpiThresholdMediumColor === undefined || this.kpiThresholdMediumColor.indexOf('#') !== 0) {
         console.log("Measurement Threshold Medium color is blank or does not begin with a #.");
         this.kpiThresholdMediumColor = "#FFE000";

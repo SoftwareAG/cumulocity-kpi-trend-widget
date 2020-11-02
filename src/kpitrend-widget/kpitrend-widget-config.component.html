@@ -58,13 +58,6 @@
       <option value = "true" [selected]="widgetInfo.measurement.threshold.enabled === 'true'">Yes</option>
 </select>
 
-<!-- Threshold up medium -->
-<label for="threshold-up-medium" translate style="margin-top: 25px;">
-      Threshold up medium
-</label>
-<input type="number" name="threshold-up-medium" id="threshold-up-medium" class="form-control"
-      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.measurement.threshold.up.medium" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'"/>
-
 <!-- Threshold up high -->
 <label for="threshold-up-high" translate style="margin-top: 25px;">
       Threshold up high
@@ -72,12 +65,12 @@
 <input type="number" name="threshold-up-high" id="threshold-up-high" class="form-control"
       (change)="updateConfig($event)" [(ngModel)]="widgetInfo.measurement.threshold.up.high" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'"/>
 
-<!-- Threshold down medium -->
-<label for="threshold-lower-medium" translate style="margin-top: 25px;">
-      Threshold down medium
+<!-- Threshold up medium -->
+<label for="threshold-up-medium" translate style="margin-top: 25px;">
+      Threshold up medium
 </label>
-<input type="number" name="threshold-down-medium" id="threshold-down-medium" class="form-control"
-      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.measurement.threshold.down.medium" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'" />
+<input type="number" name="threshold-up-medium" id="threshold-up-medium" class="form-control"
+      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.measurement.threshold.up.medium" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'"/>
 
 <!-- Threshold down high -->
 <label for="threshold-down-high" translate style="margin-top: 25px;">
@@ -85,6 +78,13 @@
 </label>
 <input type="number" name="threshold-down-high" id="threshold-down-high" class="form-control"
       (change)="updateConfig($event)" [(ngModel)]="widgetInfo.measurement.threshold.down.high" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'" />
+
+<!-- Threshold down medium -->
+<label for="threshold-lower-medium" translate style="margin-top: 25px;">
+      Threshold down medium
+</label>
+<input type="number" name="threshold-down-medium" id="threshold-down-medium" class="form-control"
+      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.measurement.threshold.down.medium" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'" />
 
 <!-- Threshold high color -->
 <label for="threshold-high-color" translate style="margin-top: 25px;">
