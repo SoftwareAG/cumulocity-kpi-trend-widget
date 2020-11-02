@@ -1,5 +1,5 @@
 # Cumulocity IoT KPI Trend Widget
-A widget that shows the current measurement in realtime and the chart based on selected time interval.
+This widget shows a current measurement value in realtime and a chart based on measurement values as datapoints.
 
 ### Installation - for the dashboards using Runtime Widget Loader
 1. Download the latest `kpitrend-widget.zip` file from the Releases section.
@@ -33,3 +33,7 @@ A widget that shows the current measurement in realtime and the chart based on s
 1. Finish the development and testing on your local machine.
 2. Run `gulp` to start the build process.
 3. Use `widget.zip` file in the `dist` folder as a distribution.
+
+------------------------------
+
+These tools are provided as-is and without warranty or support. They do not constitute part of the Software AG product suite. Users are free to use, fork and modify them, subject to the license agreement. While Software AG welcomes contributions, we cannot guarantee to include every contribution in the master project.
