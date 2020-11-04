@@ -18,29 +18,13 @@
       <option value = "weekly" [selected]="widgetInfo.aggregation.interval === 'weekly'">Weekly</option>
 </select>
 
-<!-- Measurement type-->
-<label for="measurement-type" translate style="margin-top: 25px;">
-      Measurement type
-</label>
-<input type="text" name="measurement-type" id="measurement-type" class="form-control"
-      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.measurement.type"
-      placeholder='Type' />
-
-<!-- Measurement fragment type -->
-<label for="measurement-fragment" translate style="margin-top: 25px;">
-      Measurement fragment type
-      </label>
-<input type="text" name="measurement-fragment" id="measurement-fragment"
-      class="form-control" (change)="updateConfig($event)"
-      [(ngModel)]="widgetInfo.measurement.fragment" placeholder='Fragment' />
-
-<!-- Measurement fragment series -->
+<!-- Measurement -->
 <label for="measurement-series" translate style="margin-top: 25px;">
-      Measurement fragment series
-      </label>
-<input type="text" name="measurement-series" id="measurement-series" class="form-control"
-      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.measurement.series"
-      placeholder='Series' />
+      Measurement
+</label>
+<select [disabled]="measurementSeriesDisabled" class="form-control" name="measurement-series" [(ngModel)]="widgetInfo.measurement.series" (focus)="loadFragmentSeries()" (change)="updateConfig($event)">
+      <option [ngValue]="seriesValue" *ngFor="let seriesValue of supportedSeries">{{seriesValue}}</option>
+</select>
 
 <!-- Measurement color -->
 <label for="measurement-color" translate style="margin-top: 25px;">

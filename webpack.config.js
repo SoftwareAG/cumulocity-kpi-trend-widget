@@ -46,10 +46,8 @@ module.exports = {
             useExternals: {
                 "@angular/animations": "AngularAnimations",
                 "@angular/common": "AngularCommon",
-                "@angular/common/http": "AngularCommonHttp",
                 "@angular/core": "AngularCore",
                 "@angular/forms": "AngularForms",
-                "@angular/http": "AngularHttp",
                 "@angular/platform-browser": "AngularPlatformBrowser",
                 "@angular/platform-browser/animations": "AngularPlatformBrowserAnimations",
                 "@angular/router": "AngularRouter",

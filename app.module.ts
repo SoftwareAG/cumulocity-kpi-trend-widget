@@ -16,6 +16,7 @@ import { SensorPhoneModule } from '@c8y/ngx-components/sensor-phone';
 import { KPITrendWidget } from './src/kpitrend-widget/kpitrend-widget.component';
 import { KPITrendWidgetConfig } from './src/kpitrend-widget/kpitrend-widget-config.component';
 import { ChartsModule } from 'ng2-charts';
+import { Http } from '@angular/http';
 
 @NgModule({
   imports: [

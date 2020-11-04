@@ -16,6 +16,7 @@
 * limitations under the License.
  */
 
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 
@@ -25,6 +26,10 @@ import * as _ from 'lodash';
 })
 export class KPITrendWidgetConfig implements OnInit {
   @Input() config: any = {};
+  oldDeviceId: string = '';
+
+  public supportedSeries: string[];
+  public measurementSeriesDisabled: boolean = false;
 
   widgetInfo = {
     metadata: {
@@ -33,8 +38,6 @@ export class KPITrendWidgetConfig implements OnInit {
       creationTimestamp: Date.now()
     },
     measurement: {
-      type: '',
-      fragment: '',
       series: '',
       color: '#B0B0B0',
       threshold: {
@@ -64,7 +67,10 @@ export class KPITrendWidgetConfig implements OnInit {
     }
   }
 
-  ngOnInit() {
+  //constructor(private http: Http ) {}
+  constructor(private http: HttpClient) {}
+
+  async ngOnInit() {
     // Editing an existing widget
     if(_.has(this.config, 'customwidgetdata')) {
       this.widgetInfo = _.get(this.config, 'customwidgetdata');
@@ -85,6 +91,30 @@ export class KPITrendWidgetConfig implements OnInit {
 
   public updateConfig($event: Event) {
     _.set(this.config, 'customwidgetdata', this.widgetInfo);
+  }
+
+  public async loadFragmentSeries(): Promise<void> {
+    if( !_.has(this.config, "device.id")) {
+      console.log("Cannot get fragment series because device id is blank.");
+    } else {
+      if(this.oldDeviceId !== this.config.device.id) {
+        this.measurementSeriesDisabled = true
+        const base64Auth: string = sessionStorage.getItem('_tcy8');
+        let headersObject = new HttpHeaders();
+        if(base64Auth === undefined || base64Auth.length === 0) {
+          console.log("Authorization details not found in session storage.");
+        } else {
+          headersObject = headersObject.append('Authorization', 'Basic '+base64Auth);
+        }
+        let httpOptions = {headers: headersObject};
+        let supportedSeriesResp: any = await this.http.get('/inventory/managedObjects/'+ this.config.device.id +'/supportedSeries', {...httpOptions}).toPromise();
+        this.measurementSeriesDisabled = false;
+        if(supportedSeriesResp !== undefined) {
+          this.supportedSeries = supportedSeriesResp.c8y_SupportedSeries;
+        }
+        this.oldDeviceId = this.config.device.id;
+      }
+    }
   }
 
 }

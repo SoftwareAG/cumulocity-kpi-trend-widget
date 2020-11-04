@@ -100,10 +100,9 @@ export class KPITrendWidget implements OnInit {
     return measurementAverage;
   }
 
-  private async getMeasurements(deviceId: string, measurementType: string, measurementFragment: string, measurementSeries: string, dateFrom: Date, dateTo: Date, ): Promise<any> {
+  private async getMeasurements(deviceId: string, measurementFragment: string, measurementSeries: string, dateFrom: Date, dateTo: Date, ): Promise<any> {
     const filter = {
       source: deviceId,
-      type: measurementType,
       dateFrom: formatDate(this.oldStartDatetime, this.datetimeFormat, 'en'),
       dateTo: formatDate(this.oldEndDatetime, this.datetimeFormat, 'en'),
       valueFragmentType: measurementFragment,
@@ -177,25 +176,16 @@ export class KPITrendWidget implements OnInit {
       console.log("Device is not selected. Will not be fetching any measurements.");
     }
 
-    // Get Measurement Type
-    const measurementType: string = _.get(this.config, 'customwidgetdata.measurement.type');
-    if(measurementType === undefined || measurementType.length === 0) {
+    // Get Measurement Series
+    let measurementFragment: string;
+    let measurementFragmentSeries: string;
+    let measurementSeries: string = _.get(this.config, 'customwidgetdata.measurement.series');
+    if(measurementSeries === undefined || measurementSeries.length ===0) {
       allSetToGetMeasurements = false;
-      console.log("Measurement type is not provided. Will not be fetching any measurements.");
-    }
-
-    // Get Measurement Fragment Type
-    const measurementFragmentType: string = _.get(this.config, 'customwidgetdata.measurement.fragment');
-    if(measurementFragmentType === undefined || measurementFragmentType.length === 0) {
-      allSetToGetMeasurements = false;
-      console.log("Measurement fragment type is not provided. Will not be fetching any measurements.");
-    }
-
-    // Get Measurement Fragement Series
-    const measurementFragmentSeries: string = _.get(this.config, 'customwidgetdata.measurement.series');
-    if(measurementFragmentSeries === undefined || measurementFragmentSeries.length ===0) {
-      allSetToGetMeasurements = false;
-      console.log("Measurement fragment series is not provided. Will not be fetching any measurements.");
+      console.log("Measurement series is not provided. Will not be fetching any measurements.");
+    } else {
+      measurementFragment = measurementSeries.split(".")[0];
+      measurementFragmentSeries = measurementSeries.split(".")[1];
     }
 
     // Get Measurement Color
@@ -338,16 +328,16 @@ export class KPITrendWidget implements OnInit {
     this.setOldDatetime(aggregationInterval);
 
     if(allSetToGetMeasurements) {
-      const oldMeasurementsResponse: any = await this.getMeasurements(deviceId, measurementType, measurementFragmentType, measurementFragmentSeries, this.oldStartDatetime, this.oldEndDatetime);
+      const oldMeasurementsResponse: any = await this.getMeasurements(deviceId, measurementFragment, measurementFragmentSeries, this.oldStartDatetime, this.oldEndDatetime);
       if(oldMeasurementsResponse.data[0] !== undefined) {
         oldMeasurementsResponse.data.forEach((data) => {
-          this.allDataPoints.push(data[measurementFragmentType][measurementFragmentSeries].value);
+          this.allDataPoints.push(data[measurementFragment][measurementFragmentSeries].value);
         });
 
         let oldMeasurementsAverage: number = this.calculateMeasurementsAverage();
 
         this.currentMeasurementValue = this.allDataPoints[this.totalMeasurementsCount - 1];
-        this.currentMeasurementUnit = oldMeasurementsResponse.data[this.totalMeasurementsCount - 1][measurementFragmentType][measurementFragmentSeries].unit;
+        this.currentMeasurementUnit = oldMeasurementsResponse.data[this.totalMeasurementsCount - 1][measurementFragment][measurementFragmentSeries].unit;
         this.setPercentageAndText(oldMeasurementsAverage, this.currentMeasurementValue, aggregationInterval);
 
         if(this.kpiThresholdEnabled) {
@@ -407,9 +397,9 @@ export class KPITrendWidget implements OnInit {
     });
 
     this.realtimeService.subscribe('/measurements/'+deviceId, (data) => {
-      if(data.data.data[measurementFragmentType][measurementFragmentSeries] !== undefined && data.data.data.type === measurementType) {
-        this.currentMeasurementValue = data.data.data[measurementFragmentType][measurementFragmentSeries].value;
-        this.currentMeasurementUnit = data.data.data[measurementFragmentType][measurementFragmentSeries].unit;
+      if(data.data.data[measurementFragment][measurementFragmentSeries] !== undefined) {
+        this.currentMeasurementValue = data.data.data[measurementFragment][measurementFragmentSeries].value;
+        this.currentMeasurementUnit = data.data.data[measurementFragment][measurementFragmentSeries].unit;
         this.allDataPoints.push(this.currentMeasurementValue);
         let oldMeasurementsAverage = this.calculateMeasurementsAverage();
         this.setPercentageAndText(oldMeasurementsAverage, this.currentMeasurementValue, aggregationInterval);
