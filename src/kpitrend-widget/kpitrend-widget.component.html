@@ -3,7 +3,7 @@
     <img style="max-width: 60px; max-height: 60px; vertical-align: middle;" [src]="getKPIIcon()" />
 </div>
 <div class="col-xs-8" style="height: 90px;">
-    <p style="color: grey; margin-bottom: 5px; text-transform: uppercase; font-weight: bold;">{{getKPITitle()}}</p>
+    <p [style.margin-top] = "getKPITitleTopMargin()" style="color: grey; margin-bottom: 5px; text-transform: uppercase; font-weight: bold;">{{getKPITitle()}}</p>
     <p [style.color] = "getKPIColor()" style="font-weight: bold;"><span style="font-size: 2.5em;">{{currentMeasurementValue}}</span> <span style="font-size: 1.5em;">{{currentMeasurementUnit}}</span></p>
     <p style="color: grey; text-transform: lowercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{totalPercentage | number: '1.2-2'}} {{txt}}</p>
 </div>

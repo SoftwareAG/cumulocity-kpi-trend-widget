@@ -17,7 +17,7 @@
 */
 
 import { formatDate } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MeasurementService, Realtime } from '@c8y/ngx-components/api';
 import * as _ from 'lodash';
 import { Chart } from 'chart.js';
@@ -27,7 +27,7 @@ import { Chart } from 'chart.js';
   templateUrl: './kpitrend-widget.component.html',
   styles: []
 })
-export class KPITrendWidget implements OnInit {
+export class KPITrendWidget implements OnInit, AfterViewInit {
   @Input() config;
 
   // Used internally only
@@ -51,6 +51,7 @@ export class KPITrendWidget implements OnInit {
   private kpiThresholdUpMedium: number;
   private kpiThresholdDownHigh: number;
   private kpiThresholdDownMedium: number;
+  private kpiTitleTopMargin: string;
 
   // Got public getters
   private kpiTitle: string = '';
@@ -66,7 +67,7 @@ export class KPITrendWidget implements OnInit {
   public currentMeasurementUnit: string = '';
   
 
-  constructor(private measurementService: MeasurementService, private realtimeService: Realtime) {}
+  constructor(private measurementService: MeasurementService, private realtimeService: Realtime, private elementRef: ElementRef) {}
 
   private setOldDatetime(interval: string) {
     this.oldStartDatetime = new Date();
@@ -247,13 +248,13 @@ export class KPITrendWidget implements OnInit {
       // Making sure Measurement Threshold Up Medium > Measurement Threshold Down Medium
       if(this.kpiThresholdUpMedium <= this.kpiThresholdDownMedium && this.kpiThresholdEnabled) {
         this.kpiThresholdEnabled = false;
-        console.log("Measurement Threshold Down Medium cannot be greater than Measurment Threshold Up Medium. Measurment threshold checking is disabled.");
+        console.log("Measurement Threshold Down Medium cannot be greater than Measurement Threshold Up Medium. Measurment threshold checking is disabled.");
       }
 
       // Making sure Measurement Threshold Up High > Measurement Threshold Down High
       if(this.kpiThresholdUpHigh <= this.kpiThresholdDownHigh && this.kpiThresholdEnabled) {
         this.kpiThresholdEnabled = false;
-        console.log("Measurement Threshold Down High cannot be greater than Measurment Threshold Up High. Measurment threshold checking is disabled.");
+        console.log("Measurement Threshold Down High cannot be greater than Measurement Threshold Up High. Measurment threshold checking is disabled.");
       }
 
       //Get Threshold high color
@@ -280,6 +281,8 @@ export class KPITrendWidget implements OnInit {
       console.log("KPI Title is blank.");
       this.kpiTitle = "Default Title";
       console.log("Setting KPI Title to the Default Title.");
+    } else {
+      
     }
 
     // Get KPI Icon
@@ -420,6 +423,22 @@ export class KPITrendWidget implements OnInit {
 
   }
 
+  ngAfterViewInit() {
+    let allWidgets: NodeListOf<Element> = document.querySelectorAll('.dashboard-grid-child');
+      allWidgets.forEach((w:Element) => {
+        let widgetElement: Element = w.querySelector('div > div > div > c8y-dynamic-component > kpitrend-widget');
+        if(widgetElement !== undefined && widgetElement !== null) {
+          let widgetTitleElement: Element = w.querySelector('div > div > div > c8y-dashboard-child-title');
+          const widgetTitleDisplayValue: string = window.getComputedStyle(widgetTitleElement).getPropertyValue('display');
+          if(widgetTitleDisplayValue !== undefined && widgetTitleDisplayValue !== null && widgetTitleDisplayValue === 'none') {
+            this.kpiTitleTopMargin = '10px';
+          } else {
+            this.kpiTitleTopMargin = '0';
+          }
+        }
+      });
+  }
+
   private setThresholdColorForKPI(): void {
     if(this.currentMeasurementValue <= this.kpiThresholdDownHigh) {
       this.kpiColor = this.kpiThresholdHighColor;
@@ -452,6 +471,10 @@ export class KPITrendWidget implements OnInit {
 
   public getUniqueIdForChart(): string {
     return 'canvas-' + this.creationTimestamp;
+  }
+
+  public getKPITitleTopMargin() {
+    return this.kpiTitleTopMargin;
   }
 
 }

@@ -67,7 +67,6 @@ export class KPITrendWidgetConfig implements OnInit {
     }
   }
 
-  //constructor(private http: Http ) {}
   constructor(private http: HttpClient) {}
 
   async ngOnInit() {
