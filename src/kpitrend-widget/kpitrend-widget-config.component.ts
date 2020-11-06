@@ -22,11 +22,17 @@ import * as _ from 'lodash';
 
 @Component({
   selector: 'kpitrend-widget-config',
-  templateUrl: './kpitrend-widget-config.component.html'
+  templateUrl: './kpitrend-widget-config.component.html',
+  styleUrls: ['./kpitrend-widget-config.component.css']
 })
 export class KPITrendWidgetConfig implements OnInit {
   @Input() config: any = {};
+  
   oldDeviceId: string = '';
+  chartColorPickerClosed: boolean = true;
+  measurementColorPickerClosed : boolean = true;
+  measurementThresholdHighColorPickerClosed: boolean = true;
+  measurementThresholdMediumColorPickerClosed: boolean = true;
 
   public supportedSeries: string[];
   public measurementSeriesDisabled: boolean = false;
@@ -88,7 +94,11 @@ export class KPITrendWidgetConfig implements OnInit {
     };
   }
 
-  public updateConfig($event: Event) {
+  public updateConfig() {
+    if(this.widgetInfo.measurement.threshold.enabled === 'false') {
+      this.measurementThresholdHighColorPickerClosed = true;
+      this.measurementThresholdMediumColorPickerClosed = true;
+    }
     _.set(this.config, 'customwidgetdata', this.widgetInfo);
   }
 
@@ -114,6 +124,58 @@ export class KPITrendWidgetConfig implements OnInit {
         this.oldDeviceId = this.config.device.id;
       }
     }
+  }
+
+  setSelectedColorForMeasurement(value: string) {
+    this.widgetInfo.measurement.color = value;
+    this.updateConfig();
+  }
+
+  closeMeasurementColorPicker() {
+    this.measurementColorPickerClosed = true;
+  }
+
+  openMeasurementColorPicker() {
+    this.measurementColorPickerClosed = false;
+  }
+
+  setSelectedColorForChart(value: string) {
+    this.widgetInfo.chart.color = value;
+    this.updateConfig();
+  }
+
+  closeChartColorPicker() {
+    this.chartColorPickerClosed = true;
+  }
+
+  openChartColorPicker() {
+    this.chartColorPickerClosed = false;
+  }
+
+  setSelectedColorForMeasurementThresholdHigh(value: string) {
+    this.widgetInfo.measurement.threshold.color.high = value;
+    this.updateConfig();
+  }
+
+  closeMeasurementThresholdHighColorPicker() {
+    this.measurementThresholdHighColorPickerClosed = true;
+  }
+
+  openMeasurementThresholdHighColorPicker() {
+    this.measurementThresholdHighColorPickerClosed = false;
+  }
+
+  setSelectedColorForMeasurementThresholdMedium(value: string) {
+    this.widgetInfo.measurement.threshold.color.medium = value;
+    this.updateConfig();
+  }
+
+  closeMeasurementThresholdMediumColorPicker() {
+    this.measurementThresholdMediumColorPickerClosed = true;
+  }
+
+  openMeasurementThresholdMediumColorPicker() {
+    this.measurementThresholdMediumColorPickerClosed = false;
   }
 
 }

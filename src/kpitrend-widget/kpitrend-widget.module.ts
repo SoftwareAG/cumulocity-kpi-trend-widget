@@ -4,6 +4,9 @@ import { KPITrendWidget } from './kpitrend-widget.component';
 import { KPITrendWidgetConfig } from './kpitrend-widget-config.component';
 import { ChartsModule } from 'ng2-charts';
 import { HttpClientModule } from '@angular/common/http';
+import { ColorPickerComponent } from './color-picker/color-picker-component';
+import { ColorSliderComponent } from './color-picker/color-slider/color-slider-component';
+import { ColorPaletteComponent } from './color-picker/color-palette/color-palette-component';
 
 @NgModule({
   imports: [
@@ -11,7 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     ChartsModule
   ],
-  declarations: [KPITrendWidget, KPITrendWidgetConfig],
+  declarations: [KPITrendWidget, KPITrendWidgetConfig, ColorPickerComponent, ColorSliderComponent, ColorPaletteComponent],
   entryComponents: [KPITrendWidget, KPITrendWidgetConfig],
   providers: [{
     provide: HOOK_COMPONENTS,

@@ -2,7 +2,7 @@
 <c8y-form-group>
 <!-- KPI title -->
 <label for="kpi-title" translate>Title</label>
-<input type="text" name="kpi-title" id="kpi-title" [(ngModel)]="widgetInfo.metadata.title" class="form-control" (change)="updateConfig($event)" />
+<input type="text" name="kpi-title" id="kpi-title" [(ngModel)]="widgetInfo.metadata.title" class="form-control" (change)="updateConfig()" />
 
 <!-- Upload icon-->
 <label for="kpi-icon" translate style="margin-top: 25px;">
@@ -12,7 +12,7 @@
 
 <!-- Aggregation interval -->
 <label for="aggregation-interval" translate style="margin-top: 25px;">Aggregation interval</label>
-<select class="form-control" name="aggregation-interval" [(ngModel)]="widgetInfo.aggregation.interval" (change)="updateConfig($event)">
+<select class="form-control" name="aggregation-interval" [(ngModel)]="widgetInfo.aggregation.interval" (change)="updateConfig()">
       <option value = "hourly" [selected]="widgetInfo.aggregation.interval === 'hourly'">Hourly</option>
       <option value = "daily" [selected]="widgetInfo.aggregation.interval === 'daily'">Daily</option>
       <option value = "weekly" [selected]="widgetInfo.aggregation.interval === 'weekly'">Weekly</option>
@@ -22,7 +22,7 @@
 <label for="measurement-series" translate style="margin-top: 25px;">
       Measurement
 </label>
-<select [disabled]="measurementSeriesDisabled" class="form-control" name="measurement-series" [(ngModel)]="widgetInfo.measurement.series" (focus)="loadFragmentSeries()" (change)="updateConfig($event)">
+<select [disabled]="measurementSeriesDisabled" class="form-control" name="measurement-series" [(ngModel)]="widgetInfo.measurement.series" (focus)="loadFragmentSeries()" (change)="updateConfig()">
       <option [ngValue]="seriesValue" *ngFor="let seriesValue of supportedSeries">{{seriesValue}}</option>
 </select>
 
@@ -30,14 +30,14 @@
 <label for="measurement-color" translate style="margin-top: 25px;">
       Measurement color (in hex)
       </label>
-<input type="text" name="measurement-color" id="measurement-color" class="form-control"
-      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.measurement.color" />
+<input type="text" class="form-control" id="measurement-color"  name="measurement-color" [(ngModel)]="widgetInfo.measurement.color" (change)="updateConfig()" (click)="openMeasurementColorPicker()" />
+<app-color-picker [ngClass]="measurementColorPickerClosed? 'hideColorPicker' : 'showColorPicker'" (colorPickerClosed)="closeMeasurementColorPicker()" (colorSet)="setSelectedColorForMeasurement($event)" ></app-color-picker>
 
 <!-- Threshold enabled -->
 <label for="threshold-enabled" translate style="margin-top: 25px;">
       Threshold checking enabled
 </label>
-<select class="form-control" name="threshold-enabled" [(ngModel)]="widgetInfo.measurement.threshold.enabled" (change)="updateConfig($event)">
+<select class="form-control" name="threshold-enabled" [(ngModel)]="widgetInfo.measurement.threshold.enabled" (change)="updateConfig()">
       <option value = "false" [selected]="widgetInfo.measurement.threshold.enabled === 'false'">No</option>
       <option value = "true" [selected]="widgetInfo.measurement.threshold.enabled === 'true'">Yes</option>
 </select>
@@ -47,48 +47,50 @@
       Threshold up high
 </label>
 <input type="number" name="threshold-up-high" id="threshold-up-high" class="form-control"
-      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.measurement.threshold.up.high" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'"/>
+      (change)="updateConfig()" [(ngModel)]="widgetInfo.measurement.threshold.up.high" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'"/>
 
 <!-- Threshold up medium -->
 <label for="threshold-up-medium" translate style="margin-top: 25px;">
       Threshold up medium
 </label>
 <input type="number" name="threshold-up-medium" id="threshold-up-medium" class="form-control"
-      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.measurement.threshold.up.medium" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'"/>
+      (change)="updateConfig()" [(ngModel)]="widgetInfo.measurement.threshold.up.medium" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'"/>
 
 <!-- Threshold down high -->
 <label for="threshold-down-high" translate style="margin-top: 25px;">
       Threshold down high
 </label>
 <input type="number" name="threshold-down-high" id="threshold-down-high" class="form-control"
-      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.measurement.threshold.down.high" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'" />
+      (change)="updateConfig()" [(ngModel)]="widgetInfo.measurement.threshold.down.high" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'" />
 
 <!-- Threshold down medium -->
 <label for="threshold-lower-medium" translate style="margin-top: 25px;">
       Threshold down medium
 </label>
 <input type="number" name="threshold-down-medium" id="threshold-down-medium" class="form-control"
-      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.measurement.threshold.down.medium" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'" />
+      (change)="updateConfig()" [(ngModel)]="widgetInfo.measurement.threshold.down.medium" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'" />
 
 <!-- Threshold high color -->
 <label for="threshold-high-color" translate style="margin-top: 25px;">
       Threshold high color
 </label>
 <input type="text" name="threshold-high-color" id="threshold-high-color" class="form-control"
-      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.measurement.threshold.color.high" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'" />
+      (change)="updateConfig()" [(ngModel)]="widgetInfo.measurement.threshold.color.high" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'" (click)="openMeasurementThresholdHighColorPicker()" />
+<app-color-picker [ngClass]="measurementThresholdHighColorPickerClosed? 'hideColorPicker' : 'showColorPicker'" (colorPickerClosed)="closeMeasurementThresholdHighColorPicker()" (colorSet)="setSelectedColorForMeasurementThresholdHigh($event)" ></app-color-picker>
 
 <!-- Threshold medium color -->
 <label for="threshold-medium-color" translate style="margin-top: 25px;">
       Threshold medium color
 </label>
 <input type="text" name="threshold-medium-color" id="threshold-medium-color" class="form-control"
-      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.measurement.threshold.color.medium" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'" />
+      (change)="updateConfig()" [(ngModel)]="widgetInfo.measurement.threshold.color.medium" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'" (click)="openMeasurementThresholdMediumColorPicker()" />
+<app-color-picker [ngClass]="measurementThresholdMediumColorPickerClosed? 'hideColorPicker' : 'showColorPicker'" (colorPickerClosed)="closeMeasurementThresholdMediumColorPicker()" (colorSet)="setSelectedColorForMeasurementThresholdMedium($event)" ></app-color-picker>
 
 <!-- Chart type -->
 <label for="chart-type" translate style="margin-top: 25px;">
       Chart type
 </label>
-<select class="form-control" name="chart-type" [(ngModel)]="widgetInfo.chart.type" (change)="updateConfig($event)">
+<select class="form-control" name="chart-type" [(ngModel)]="widgetInfo.chart.type" (change)="updateConfig()">
       <option value = "line" [selected]="widgetInfo.chart.type === 'line'">Line</option>
       <option value = "bar" [selected]="widgetInfo.chart.type === 'bar'">Bar</option>
 </select>
@@ -98,21 +100,22 @@
       Chart height (in pixels)
       </label>
 <input type="number" name="chart-height" id="chart-height" class="form-control"
-      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.chart.height"/>
+      (change)="updateConfig()" [(ngModel)]="widgetInfo.chart.height"/>
 
 <!-- Chart color -->
-<label for="measurement-series" translate style="margin-top: 25px;">
+<label for="chart-color" translate style="margin-top: 25px;">
       Chart color (in hex)
       </label>
 <input type="text" name="chart-color" id="chart-color" class="form-control"
-      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.chart.color" />
+      (change)="updateConfig()" [(ngModel)]="widgetInfo.chart.color" (click)="openChartColorPicker()" />
+<app-color-picker [ngClass]="chartColorPickerClosed? 'hideColorPicker' : 'showColorPicker'" (colorPickerClosed)="closeChartColorPicker()" (colorSet)="setSelectedColorForChart($event)"></app-color-picker>
 
 <!-- Chart data points count -->
 <label for="measurement-series" translate style="margin-top: 25px;">
       Chart datapoints count
       </label>
 <input type="number" name="chart-datapointcount" id="chart-datapointcount" class="form-control"
-      (change)="updateConfig($event)" [(ngModel)]="widgetInfo.chart.datapointCount" />
+      (change)="updateConfig()" [(ngModel)]="widgetInfo.chart.datapointCount" />
 
 
 </c8y-form-group>
