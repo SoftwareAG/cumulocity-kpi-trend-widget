@@ -2,7 +2,7 @@
 
 This widget shows a current measurement value in realtime and a chart based on measurement values as datapoints.
 
-![KPI Trend Widget] (/assets/img-preview.png)
+<img src="/assets/img-preview.png" />
 
 ### Features
 * Supports measurements from a single device
