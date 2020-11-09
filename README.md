@@ -1,5 +1,15 @@
-# Cumulocity IoT KPI Trend Widget
+# Cumulocity IoT KPI Trend Widget [<img width="35" src="/assets/icon-download.png"/>](https://github.com/SoftwareAG/cumulocity-kpi-trend-widget/releases/download/v1.0/kpitrend-widget.zip)
+
 This widget shows a current measurement value in realtime and a chart based on measurement values as datapoints.
+
+![KPI Trend Widget] (/assets/img-preview.png)
+
+### Features
+* Supports measurements from a single device
+* Allows color customization for KPI and the trend chart.
+* Allows to configure threshold values and do color customization.
+* Allows to upload custom image to represent the KPI.
+* Supports different chart types.
 
 ### Installation - for the dashboards using Runtime Widget Loader
 1. Download the latest `kpitrend-widget.zip` file from the Releases section.
