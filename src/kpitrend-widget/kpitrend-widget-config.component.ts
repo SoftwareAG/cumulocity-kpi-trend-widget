@@ -30,9 +30,9 @@ export class KPITrendWidgetConfig implements OnInit {
   
   oldDeviceId: string = '';
   chartColorPickerClosed: boolean = true;
-  measurementColorPickerClosed : boolean = true;
-  measurementThresholdHighColorPickerClosed: boolean = true;
-  measurementThresholdMediumColorPickerClosed: boolean = true;
+  kpiColorPickerClosed : boolean = true;
+  kpiThresholdHighColorPickerClosed: boolean = true;
+  kpiThresholdMediumColorPickerClosed: boolean = true;
 
   public supportedSeries: string[];
   public measurementSeriesDisabled: boolean = false;
@@ -43,9 +43,13 @@ export class KPITrendWidgetConfig implements OnInit {
       icon: '',
       creationTimestamp: Date.now()
     },
-    measurement: {
-      series: '',
-      color: '#B0B0B0',
+    measurement: '',
+    kpi: {
+      color: '#b0b0b0',
+      unit: '',
+      aggregation: {
+        interval: 'hourly'
+      },
       threshold: {
         enabled: 'false',
         up: {
@@ -57,19 +61,20 @@ export class KPITrendWidgetConfig implements OnInit {
           medium: 10
         },
         color :  {
-          high: '#FF0000',
-          medium: '#FFE000'
+          high: '#ff0000',
+          medium: '#ffe000'
         }
       }
-    },
-    aggregation: {
-      interval: 'hourly'
     },
     chart: {
       type: 'line',
       height: 100,
-      datapointCount: 100,
-      color: '#1776BF'
+      aggregation: {
+        type: 'interval',
+        interval: 'hourly',
+        count: 100
+      },
+      color: '#1776bf'
     }
   }
 
@@ -95,9 +100,9 @@ export class KPITrendWidgetConfig implements OnInit {
   }
 
   public updateConfig() {
-    if(this.widgetInfo.measurement.threshold.enabled === 'false') {
-      this.measurementThresholdHighColorPickerClosed = true;
-      this.measurementThresholdMediumColorPickerClosed = true;
+    if(this.widgetInfo.kpi.threshold.enabled === 'false') {
+      this.kpiThresholdHighColorPickerClosed = true;
+      this.kpiThresholdMediumColorPickerClosed = true;
     }
     _.set(this.config, 'customwidgetdata', this.widgetInfo);
   }
@@ -126,17 +131,17 @@ export class KPITrendWidgetConfig implements OnInit {
     }
   }
 
-  setSelectedColorForMeasurement(value: string) {
-    this.widgetInfo.measurement.color = value;
+  setSelectedColorForKPI(value: string) {
+    this.widgetInfo.kpi.color = value;
     this.updateConfig();
   }
 
-  closeMeasurementColorPicker() {
-    this.measurementColorPickerClosed = true;
+  closeKPIColorPicker() {
+    this.kpiColorPickerClosed = true;
   }
 
-  openMeasurementColorPicker() {
-    this.measurementColorPickerClosed = false;
+  openKPIColorPicker() {
+    this.kpiColorPickerClosed = false;
   }
 
   setSelectedColorForChart(value: string) {
@@ -152,30 +157,30 @@ export class KPITrendWidgetConfig implements OnInit {
     this.chartColorPickerClosed = false;
   }
 
-  setSelectedColorForMeasurementThresholdHigh(value: string) {
-    this.widgetInfo.measurement.threshold.color.high = value;
+  setSelectedColorForKPIThresholdHigh(value: string) {
+    this.widgetInfo.kpi.threshold.color.high = value;
     this.updateConfig();
   }
 
-  closeMeasurementThresholdHighColorPicker() {
-    this.measurementThresholdHighColorPickerClosed = true;
+  closeKPIThresholdHighColorPicker() {
+    this.kpiThresholdHighColorPickerClosed = true;
   }
 
-  openMeasurementThresholdHighColorPicker() {
-    this.measurementThresholdHighColorPickerClosed = false;
+  openKPIThresholdHighColorPicker() {
+    this.kpiThresholdHighColorPickerClosed = false;
   }
 
-  setSelectedColorForMeasurementThresholdMedium(value: string) {
-    this.widgetInfo.measurement.threshold.color.medium = value;
+  setSelectedColorForKPIThresholdMedium(value: string) {
+    this.widgetInfo.kpi.threshold.color.medium = value;
     this.updateConfig();
   }
 
-  closeMeasurementThresholdMediumColorPicker() {
-    this.measurementThresholdMediumColorPickerClosed = true;
+  closeKPIThresholdMediumColorPicker() {
+    this.kpiThresholdMediumColorPickerClosed = true;
   }
 
-  openMeasurementThresholdMediumColorPicker() {
-    this.measurementThresholdMediumColorPickerClosed = false;
+  openKPIThresholdMediumColorPicker() {
+    this.kpiThresholdMediumColorPickerClosed = false;
   }
 
 }

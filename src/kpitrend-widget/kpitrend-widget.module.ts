@@ -23,7 +23,7 @@ import { ColorPaletteComponent } from './color-picker/color-palette/color-palett
       {
         id: 'com.softwareag.globalpresales.kpitrendwidget',
         label: 'KPI Trend',
-        description: 'This widget shows the current measurement and how its value is in respect to the average value of the measurements for a selection interval. It also shows all the measurements in realtime in the chart.',
+        description: 'This widget shows the latest measurement value and unit received from a device as a KPI. It compares this measurement value with the average of measurements received in the selected interval and calculated the percentage growth or fall. It allows to configure threshold values to change the KPI color when threshold values are reached. It also shows a trend chart by plotting all the measurement values received for the selected interval or measurements count.',
         component: KPITrendWidget,
         configComponent: KPITrendWidgetConfig,
         previewImage: require("~assets/img-preview.png")

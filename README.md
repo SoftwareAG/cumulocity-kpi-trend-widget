@@ -28,9 +28,21 @@ This widget shows a current measurement value in realtime and a chart based on m
 1. Make sure you have successfully installed or deployed the widget.
 2. Click on `Add widget`.
 3. Choose `KPI Trend` widget.
-4. Select the `device`.
-5. Fill in all the fields as required. `Measurement type`, `Measurement fragment type` and `Measurement fragment series` are mandatory fields to view the KPI and trend Chart.
-6. Click `Save` to add the widget on dashboard.
+4. `Title` is the title of widget. Provide a relevant name. You may choose to hide this. Go to `Appearance` tab and choose `Hidden` under `Widget header style`.
+5. Select the `device`.
+6. `KPI title` is the name of the KPI you want to show. Example: Temperature, Humidity.
+7. `Upload KPI icon` allows you to upload relevant icon. Icon should be a image format like .png, jpg, etc.
+8. `Measurement` allows you to choose the Fragment and Series combined. It automatically gets populated based on the device selected.
+9. `KPI aggregation interval` is an interval to choose the measurements from to calculate the KPI.
+10. `KPI color` is the custom color you may want to specify. Clicking this field opens a color picker to help you selecting a color.
+11. `KPI unit` is a unit value you to specify. Providing this value override the value received with measurement. Leave blank if you don't want to override. Examples: km, m, kg, etc.
+12. `KPI threshold enabled` and its related fields allows you to configure threshold values. KPI will change its color on reaching the threshold values.
+13. `Chart type` is the type of the chart you want to see. There are 2 options line and bar.
+14. `Chart height` is the height of the chart you want to configure in pixels.
+15. `Chart color` is the color of the chart you want to see. Clicking this field opens a color picker.
+16. `Chart aggregation type` is whether you want to retrieve the measurement to be plotted on the chart based on the interval or the custom number.
+17. Click `Save` to add the widget on the dashboard.
+18. In case you see unexpected results on the widget, refer to browser console to see if there are error logs.
 
 ### Development - to do the enhancements and testing locally
 1. Clone the repository on local machine using `git clone https://github.com/SoftwareAG/cumulocity-kpi-trend-widget.git`.

@@ -1,90 +1,94 @@
 
 <c8y-form-group>
 <!-- KPI title -->
-<label for="kpi-title" translate>Title</label>
+<label for="kpi-title" translate>KPI title</label>
 <input type="text" name="kpi-title" id="kpi-title" [(ngModel)]="widgetInfo.metadata.title" class="form-control" (change)="updateConfig()" />
 
 <!-- Upload icon-->
 <label for="kpi-icon" translate style="margin-top: 25px;">
-      Upload icon      
+      Upload KPI icon      
 </label>
 <input type="file" name="kpi-icon" class="form-control" alt="Icon" (change)="updateIconInConfig($event)" />
 
-<!-- Aggregation interval -->
-<label for="aggregation-interval" translate style="margin-top: 25px;">Aggregation interval</label>
-<select class="form-control" name="aggregation-interval" [(ngModel)]="widgetInfo.aggregation.interval" (change)="updateConfig()">
-      <option value = "hourly" [selected]="widgetInfo.aggregation.interval === 'hourly'">Hourly</option>
-      <option value = "daily" [selected]="widgetInfo.aggregation.interval === 'daily'">Daily</option>
-      <option value = "weekly" [selected]="widgetInfo.aggregation.interval === 'weekly'">Weekly</option>
-</select>
-
 <!-- Measurement -->
-<label for="measurement-series" translate style="margin-top: 25px;">
+<label for="measurement" translate style="margin-top: 25px;">
       Measurement
 </label>
-<select [disabled]="measurementSeriesDisabled" class="form-control" name="measurement-series" [(ngModel)]="widgetInfo.measurement.series" (focus)="loadFragmentSeries()" (change)="updateConfig()">
+<select [disabled]="measurementSeriesDisabled" class="form-control" name="measurement" [(ngModel)]="widgetInfo.measurement" (focus)="loadFragmentSeries()" (change)="updateConfig()">
       <option [ngValue]="seriesValue" *ngFor="let seriesValue of supportedSeries">{{seriesValue}}</option>
 </select>
 
-<!-- Measurement color -->
-<label for="measurement-color" translate style="margin-top: 25px;">
-      Measurement color (in hex)
-      </label>
-<input type="text" class="form-control" id="measurement-color"  name="measurement-color" [(ngModel)]="widgetInfo.measurement.color" (change)="updateConfig()" (click)="openMeasurementColorPicker()" />
-<app-color-picker [ngClass]="measurementColorPickerClosed? 'hideColorPicker' : 'showColorPicker'" (colorPickerClosed)="closeMeasurementColorPicker()" (colorSet)="setSelectedColorForMeasurement($event)" ></app-color-picker>
-
-<!-- Threshold enabled -->
-<label for="threshold-enabled" translate style="margin-top: 25px;">
-      Threshold checking enabled
-</label>
-<select class="form-control" name="threshold-enabled" [(ngModel)]="widgetInfo.measurement.threshold.enabled" (change)="updateConfig()">
-      <option value = "false" [selected]="widgetInfo.measurement.threshold.enabled === 'false'">No</option>
-      <option value = "true" [selected]="widgetInfo.measurement.threshold.enabled === 'true'">Yes</option>
+<!-- KPI Aggregation interval -->
+<label for="kpi-aggregation-interval" translate style="margin-top: 25px;">KPI aggregation interval (max. 2000 measurements considered)</label>
+<select class="form-control" name="kpi-aggregation-interval" [(ngModel)]="widgetInfo.kpi.aggregation.interval" (change)="updateConfig()">
+      <option value = "hourly" [selected]="widgetInfo.kpi.aggregation.interval === 'hourly'">Hourly</option>
+      <option value = "daily" [selected]="widgetInfo.kpi.aggregation.interval === 'daily'">Daily</option>
+      <option value = "weekly" [selected]="widgetInfo.kpi.aggregation.interval === 'weekly'">Weekly</option>
 </select>
 
-<!-- Threshold up high -->
-<label for="threshold-up-high" translate style="margin-top: 25px;">
-      Threshold up high
-</label>
-<input type="number" name="threshold-up-high" id="threshold-up-high" class="form-control"
-      (change)="updateConfig()" [(ngModel)]="widgetInfo.measurement.threshold.up.high" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'"/>
+<!-- KPI Measurement color -->
+<label for="kpi-color" translate style="margin-top: 25px;">
+      KPI color (in hex)
+      </label>
+<input type="text" class="form-control" id="kpi-color" name="kpi-color" [(ngModel)]="widgetInfo.kpi.color" (change)="updateConfig()" (click)="openKPIColorPicker()" />
+<app-color-picker [ngClass]="kpiColorPickerClosed? 'hideColorPicker' : 'showColorPicker'" (colorPickerClosed)="closeKPIColorPicker()" (colorSet)="setSelectedColorForKPI($event)" ></app-color-picker>
 
-<!-- Threshold up medium -->
-<label for="threshold-up-medium" translate style="margin-top: 25px;">
-      Threshold up medium
-</label>
-<input type="number" name="threshold-up-medium" id="threshold-up-medium" class="form-control"
-      (change)="updateConfig()" [(ngModel)]="widgetInfo.measurement.threshold.up.medium" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'"/>
+<!-- KPI Unit -->
+<label for="kpi-unit" translate style="margin-top: 25px;">KPI unit (optional) (eg: km, g)</label>
+<input type="text" name="kpi-unit" id="kpi-unit" [(ngModel)]="widgetInfo.kpi.unit" class="form-control" (change)="updateConfig()" />
 
-<!-- Threshold down high -->
-<label for="threshold-down-high" translate style="margin-top: 25px;">
-      Threshold down high
+<!-- KPI Threshold enabled -->
+<label for="kpi-threshold-enabled" translate style="margin-top: 25px;">
+      KPI threshold enabled
 </label>
-<input type="number" name="threshold-down-high" id="threshold-down-high" class="form-control"
-      (change)="updateConfig()" [(ngModel)]="widgetInfo.measurement.threshold.down.high" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'" />
+<select class="form-control" name="kpi-threshold-enabled" [(ngModel)]="widgetInfo.kpi.threshold.enabled" (change)="updateConfig()">
+      <option value = "false" [selected]="widgetInfo.kpi.threshold.enabled === 'false'">No</option>
+      <option value = "true" [selected]="widgetInfo.kpi.threshold.enabled === 'true'">Yes</option>
+</select>
 
-<!-- Threshold down medium -->
-<label for="threshold-lower-medium" translate style="margin-top: 25px;">
-      Threshold down medium
+<!-- KPI Threshold up high -->
+<label for="kpi-threshold-up-high" translate style="margin-top: 25px;">
+      KPI threshold up high
 </label>
-<input type="number" name="threshold-down-medium" id="threshold-down-medium" class="form-control"
-      (change)="updateConfig()" [(ngModel)]="widgetInfo.measurement.threshold.down.medium" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'" />
+<input type="number" name="kpi-threshold-up-high" id="kpi-threshold-up-high" class="form-control"
+      (change)="updateConfig()" [(ngModel)]="widgetInfo.kpi.threshold.up.high" [disabled]="widgetInfo.kpi.threshold.enabled === 'false'"/>
 
-<!-- Threshold high color -->
-<label for="threshold-high-color" translate style="margin-top: 25px;">
-      Threshold high color
+<!-- KPI Threshold up medium -->
+<label for="kpi-threshold-up-medium" translate style="margin-top: 25px;">
+      KPI threshold up medium
 </label>
-<input type="text" name="threshold-high-color" id="threshold-high-color" class="form-control"
-      (change)="updateConfig()" [(ngModel)]="widgetInfo.measurement.threshold.color.high" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'" (click)="openMeasurementThresholdHighColorPicker()" />
-<app-color-picker [ngClass]="measurementThresholdHighColorPickerClosed? 'hideColorPicker' : 'showColorPicker'" (colorPickerClosed)="closeMeasurementThresholdHighColorPicker()" (colorSet)="setSelectedColorForMeasurementThresholdHigh($event)" ></app-color-picker>
+<input type="number" name="kpi-threshold-up-medium" id="kpi-threshold-up-medium" class="form-control"
+      (change)="updateConfig()" [(ngModel)]="widgetInfo.kpi.threshold.up.medium" [disabled]="widgetInfo.kpi.threshold.enabled === 'false'"/>
 
-<!-- Threshold medium color -->
-<label for="threshold-medium-color" translate style="margin-top: 25px;">
-      Threshold medium color
+<!-- KPI Threshold down high -->
+<label for="kpi-threshold-down-high" translate style="margin-top: 25px;">
+      KPI threshold down high
 </label>
-<input type="text" name="threshold-medium-color" id="threshold-medium-color" class="form-control"
-      (change)="updateConfig()" [(ngModel)]="widgetInfo.measurement.threshold.color.medium" [disabled]="widgetInfo.measurement.threshold.enabled === 'false'" (click)="openMeasurementThresholdMediumColorPicker()" />
-<app-color-picker [ngClass]="measurementThresholdMediumColorPickerClosed? 'hideColorPicker' : 'showColorPicker'" (colorPickerClosed)="closeMeasurementThresholdMediumColorPicker()" (colorSet)="setSelectedColorForMeasurementThresholdMedium($event)" ></app-color-picker>
+<input type="number" name="kpi-threshold-down-high" id="kpi-threshold-down-high" class="form-control"
+      (change)="updateConfig()" [(ngModel)]="widgetInfo.kpi.threshold.down.high" [disabled]="widgetInfo.kpi.threshold.enabled === 'false'" />
+
+<!-- KPI Threshold down medium -->
+<label for="kpi-threshold-lower-medium" translate style="margin-top: 25px;">
+      KPI threshold down medium
+</label>
+<input type="number" name="kpi-threshold-down-medium" id="kpi-threshold-down-medium" class="form-control"
+      (change)="updateConfig()" [(ngModel)]="widgetInfo.kpi.threshold.down.medium" [disabled]="widgetInfo.kpi.threshold.enabled === 'false'" />
+
+<!-- KPI Threshold high color -->
+<label for="kpi-threshold-high-color" translate style="margin-top: 25px;">
+      KPI threshold high color (in hex)
+</label>
+<input type="text" name="kpi-threshold-high-color" id="kpi-threshold-high-color" class="form-control"
+      (change)="updateConfig()" [(ngModel)]="widgetInfo.kpi.threshold.color.high" [disabled]="widgetInfo.kpi.threshold.enabled === 'false'" (click)="openKPIThresholdHighColorPicker()" />
+<app-color-picker [ngClass]="kpiThresholdHighColorPickerClosed? 'hideColorPicker' : 'showColorPicker'" (colorPickerClosed)="closeKPIThresholdHighColorPicker()" (colorSet)="setSelectedColorForKPIThresholdHigh($event)" ></app-color-picker>
+
+<!-- KPI Threshold medium color -->
+<label for="kpi-threshold-medium-color" translate style="margin-top: 25px;">
+      KPI threshold medium color (in hex)
+</label>
+<input type="text" name="kpi-threshold-medium-color" id="kpi-threshold-medium-color" class="form-control"
+      (change)="updateConfig()" [(ngModel)]="widgetInfo.kpi.threshold.color.medium" [disabled]="widgetInfo.kpi.threshold.enabled === 'false'" (click)="openKPIThresholdMediumColorPicker()" />
+<app-color-picker [ngClass]="kpiThresholdMediumColorPickerClosed? 'hideColorPicker' : 'showColorPicker'" (colorPickerClosed)="closeKPIThresholdMediumColorPicker()" (colorSet)="setSelectedColorForKPIThresholdMedium($event)" ></app-color-picker>
 
 <!-- Chart type -->
 <label for="chart-type" translate style="margin-top: 25px;">
@@ -96,7 +100,7 @@
 </select>
 
 <!-- Chart height -->
-<label for="measurement-series" translate style="margin-top: 25px;">
+<label for="chart-height" translate style="margin-top: 25px;">
       Chart height (in pixels)
       </label>
 <input type="number" name="chart-height" id="chart-height" class="form-control"
@@ -110,12 +114,40 @@
       (change)="updateConfig()" [(ngModel)]="widgetInfo.chart.color" (click)="openChartColorPicker()" />
 <app-color-picker [ngClass]="chartColorPickerClosed? 'hideColorPicker' : 'showColorPicker'" (colorPickerClosed)="closeChartColorPicker()" (colorSet)="setSelectedColorForChart($event)"></app-color-picker>
 
-<!-- Chart data points count -->
-<label for="measurement-series" translate style="margin-top: 25px;">
-      Chart datapoints count
-      </label>
-<input type="number" name="chart-datapointcount" id="chart-datapointcount" class="form-control"
-      (change)="updateConfig()" [(ngModel)]="widgetInfo.chart.datapointCount" />
+<!-- Chart aggregation type -->
+<label for="chart-aggregation-type" translate style="margin-top: 25px;">
+      Chart aggregation type
+</label>
+<div class="row">
+      <div class="col-lg-2">
+            <input type="radio" name="chart-aggregation-type" value="interval" [(ngModel)]="widgetInfo.chart.aggregation.type" style="margin-right: 5px;" />Interval
+      </div>
+      <div class="col-lg-2">
+            <input type="radio" name="chart-aggregation-type" value="count" [(ngModel)]="widgetInfo.chart.aggregation.type" style="margin-right: 5px;" />Count
+      </div>
+</div>
+
+<!-- Chart aggregation interval -->
+<ng-container *ngIf="widgetInfo.chart.aggregation.type === 'interval'">
+      <label for="chart-aggregation-interval" translate style="margin-top: 25px;">
+            Chart aggregation interval (max. 2000 measurements considered)
+            </label>
+      <select class="form-control" name="chart-aggregation-interval" [(ngModel)]="widgetInfo.chart.aggregation.interval" (change)="updateConfig()">
+            <option value = "hourly" [selected]="widgetInfo.chart.aggregation.interval === 'hourly'">Hourly</option>
+            <option value = "daily" [selected]="widgetInfo.chart.aggregation.interval === 'daily'">Daily</option>
+            <option value = "weekly" [selected]="widgetInfo.chart.aggregation.interval === 'weekly'">Weekly</option>
+      </select>
+</ng-container>
+
+
+<!-- Chart aggregation count -->
+<ng-container *ngIf="widgetInfo.chart.aggregation.type === 'count'">
+      <label for="chart-aggregation-count" translate style="margin-top: 25px;">
+            Chart aggregation count (max. 2000 measurements considered)
+            </label>
+      <input type="number" name="chart-aggregation-count" id="chart-aggregation-count" class="form-control"
+            (change)="updateConfig()" [(ngModel)]="widgetInfo.chart.aggregation.count" />
+</ng-container>
 
 
 </c8y-form-group>

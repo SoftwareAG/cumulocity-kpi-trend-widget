@@ -7,10 +7,10 @@
     <p [style.margin-top] = "getKPITitleTopMargin()" style="color: grey; margin-bottom: 5px; text-transform: uppercase; font-weight: bold;">{{getKPITitle()}}</p>
     
     <!-- KPI value and unit -->
-    <p [style.color] = "getKPIColor()" style="font-weight: bold;"><span style="font-size: 2.5em;">{{currentMeasurementValue | number : '1.0-2'}}</span> <span style="font-size: 1.5em;">{{currentMeasurementUnit}}</span></p>
+    <p [style.color] = "getKPIColor()" style="font-weight: bold;"><span style="font-size: 2.5em;">{{getKPIValue() | number : '1.0-2'}}</span> <span style="font-size: 1.5em;">{{getKPIUnit()}}</span></p>
     
     <!-- KPI text -->
-    <p style="color: grey; text-transform: lowercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{totalPercentage | number: '1.2-2'}} {{txt}}</p>
+    <p style="color: grey; text-transform: lowercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{getKPIPercentage() | number: '1.2-2'}} {{getKPIText()}}</p>
 </div>
 <div class="col-xs-12" style="margin-top: 25px;">
     <canvas [id]="getUniqueIdForChart()" [style.height] = "getChartHeight()"></canvas>
