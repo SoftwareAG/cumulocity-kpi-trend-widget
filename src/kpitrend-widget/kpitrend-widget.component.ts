@@ -82,6 +82,8 @@ interface Validation {
 }
 
 interface Chart {
+  enabled: string,
+  position: string,
   content: any,
   type: string,
   height: number,
@@ -165,6 +167,8 @@ export class KPITrendWidget implements OnInit, AfterViewInit {
   }
 
   private chart: Chart = {
+    enabled: '',
+    position: '',
     content: {},
     color: '',
     height: 0,
@@ -325,11 +329,25 @@ export class KPITrendWidget implements OnInit, AfterViewInit {
       this.kpi.aggregation.interval.name = "hourly";
     }
 
+    // Get Chart Enabled
+    this.chart.enabled = _.get(this.config, 'customwidgetdata.chart.enabled');
+    if(this.chart.enabled === undefined || this.chart.enabled === '') {
+      console.log("Chart enabled is undefined. Setting it to its defaut as true.");
+      this.chart.enabled = 'true';
+    }
+
     // Get Chart type
     this.chart.type = _.get(this.config, 'customwidgetdata.chart.type');
     if(this.chart.type === undefined || this.chart.type.length === 0) {
       console.log("Chart type is blank. Setting it to its default type line.");
       this.chart.type = 'line';
+    }
+
+    // Get Chart Position
+    this.chart.position = _.get(this.config, 'customwidgetdata.chart.position');
+    if(this.chart.position === undefined || this.chart.position.length === 0) {
+      console.log("Chart position is blank. Setting it to its default positon bottom.");
+      this.chart.position = 'bottom';
     }
 
     // Get Chart Height
@@ -401,35 +419,39 @@ export class KPITrendWidget implements OnInit, AfterViewInit {
         }
       }
 
-      let chartMeasurementResponse: any;
-      let chartDatapointCount: number = 0;
-      // Get measurements to show the chart
-      if(this.chart.aggregation.type === "count") {
-        chartMeasurementResponse = await this.getMeasurements(this.device.id, this.measurement.fragment, this.measurement.series);
-        chartDatapointCount = this.chart.aggregation.count;
-      } else {
-        if(this.kpi.aggregation.interval.name === this.chart.aggregation.interval.name) {
-          chartMeasurementResponse = kpiMeasurementResponse;
-          chartDatapointCount = chartMeasurementResponse.data.length;
+      // Chart is enabled
+      if(this.chart.enabled === 'true') {
+        
+        let chartMeasurementResponse: any;
+        let chartDatapointCount: number = 0;
+        // Get measurements to show the chart
+        if(this.chart.aggregation.type === "count") {
+          chartMeasurementResponse = await this.getMeasurements(this.device.id, this.measurement.fragment, this.measurement.series);
+          chartDatapointCount = this.chart.aggregation.count;
         } else {
-          chartMeasurementResponse = await this.getMeasurementsByDate(this.device.id, this.measurement.fragment, this.measurement.series, this.kpi.aggregation.interval.startDatetime, this.kpi.aggregation.interval.endDatetime);
-          chartDatapointCount = chartMeasurementResponse.data.length;
+          if(this.kpi.aggregation.interval.name === this.chart.aggregation.interval.name) {
+            chartMeasurementResponse = kpiMeasurementResponse;
+            chartDatapointCount = chartMeasurementResponse.data.length;
+          } else {
+            chartMeasurementResponse = await this.getMeasurementsByDate(this.device.id, this.measurement.fragment, this.measurement.series, this.kpi.aggregation.interval.startDatetime, this.kpi.aggregation.interval.endDatetime);
+            chartDatapointCount = chartMeasurementResponse.data.length;
+          }
         }
-      }
-
-      // Show chart if the measurement response is not empty
-      if(chartMeasurementResponse.data[0] !== undefined) {
-        if(chartMeasurementResponse.data.length < chartDatapointCount) {
-          chartDatapointCount = chartMeasurementResponse.data.length;
+  
+        // Show chart if the measurement response is not empty
+        if(chartMeasurementResponse.data[0] !== undefined) {
+          if(chartMeasurementResponse.data.length < chartDatapointCount) {
+            chartDatapointCount = chartMeasurementResponse.data.length;
+          }
+  
+          for(let i=0; i<chartDatapointCount; i++) {
+            this.chart.data.points.push(chartMeasurementResponse.data[i][this.measurement.fragment][this.measurement.series].value);
+            this.chart.data.labels.push(chartMeasurementResponse.data[i].time);
+          }
+  
+          // Show the Chart in the widget
+          this.showChart();
         }
-
-        for(let i=0; i<chartDatapointCount; i++) {
-          this.chart.data.points.push(chartMeasurementResponse.data[i][this.measurement.fragment][this.measurement.series].value);
-          this.chart.data.labels.push(chartMeasurementResponse.data[i].time);
-        }
-
-        // Show the Chart in the widget
-        this.showChart();
       }
 
       // Subscribe to reatime measurements
@@ -455,20 +477,23 @@ export class KPITrendWidget implements OnInit, AfterViewInit {
           if(this.kpi.threshold.enabled) {
             this.calculateKPIThresholdColor();
           }
-
-          // Update Chart with this new realtime measurement received
-          this.chart.data.points.push(this.kpi.value);
-          this.chart.data.labels.push(data.data.data.time);
-          if(this.chart.aggregation.type === "count") {
-            if(this.chart.data.points.length > this.chart.aggregation.count) {
+          
+          // Chart is enabled
+          if(this.chart.enabled === 'true') {
+            // Update Chart with this new realtime measurement received
+            this.chart.data.points.push(this.kpi.value);
+            this.chart.data.labels.push(data.data.data.time);
+            if(this.chart.aggregation.type === "count") {
+              if(this.chart.data.points.length > this.chart.aggregation.count) {
+                this.chart.data.points.shift();
+                this.chart.data.labels.shift();
+                this.chart.content.update();
+              }
+            } else {
               this.chart.data.points.shift();
               this.chart.data.labels.shift();
               this.chart.content.update();
             }
-          } else {
-            this.chart.data.points.shift();
-            this.chart.data.labels.shift();
-            this.chart.content.update();
           }
         }
       });
@@ -688,6 +713,15 @@ export class KPITrendWidget implements OnInit, AfterViewInit {
     return this.kpi.icon;
   }
 
+  // Get KPI Container Height
+  public getKPIContainerHeight(): string {
+    if(this.chart.enabled === 'true' && this.chart.position === 'right') {
+      return (this.chart.height + 25) + 'px'; 
+    } else {
+      return '90px';
+    }
+  }
+
   // Getter KPI Value
   public getKPIValue() {
     return this.kpi.value;
@@ -721,6 +755,16 @@ export class KPITrendWidget implements OnInit, AfterViewInit {
   // Getter Chart Height
   public getChartHeight(): string {
     return this.chart.height + 'px';
+  }
+
+  // Get Chart Enabled
+  public chartEnabled() {
+    return this.chart.enabled;
+  }
+
+  // Get Chart Position
+  public getChartPosition(): string {
+    return this.chart.position;
   }
 
 }

@@ -90,13 +90,31 @@
       (change)="updateConfig()" [(ngModel)]="widgetInfo.kpi.threshold.color.medium" [disabled]="widgetInfo.kpi.threshold.enabled === 'false'" (click)="openKPIThresholdMediumColorPicker()" />
 <app-color-picker [ngClass]="kpiThresholdMediumColorPickerClosed? 'hideColorPicker' : 'showColorPicker'" (colorPickerClosed)="closeKPIThresholdMediumColorPicker()" (colorSet)="setSelectedColorForKPIThresholdMedium($event)" ></app-color-picker>
 
+<!-- Chart Enabled -->
+<label for="chart-enabled" translate style="margin-top: 25px;">
+      Chart enabled
+</label>
+<select class="form-control" name="chart-enabled" [(ngModel)]="widgetInfo.chart.enabled" (change)="updateConfig()">
+      <option value = "false" [selected]="widgetInfo.chart.enabled === 'false'">No</option>
+      <option value = "true" [selected]="widgetInfo.chart.enabled === 'true'">Yes</option>
+</select>
+
 <!-- Chart type -->
 <label for="chart-type" translate style="margin-top: 25px;">
       Chart type
 </label>
-<select class="form-control" name="chart-type" [(ngModel)]="widgetInfo.chart.type" (change)="updateConfig()">
+<select class="form-control" name="chart-type" [(ngModel)]="widgetInfo.chart.type" (change)="updateConfig()" [disabled]="widgetInfo.chart.enabled === 'false'">
       <option value = "line" [selected]="widgetInfo.chart.type === 'line'">Line</option>
       <option value = "bar" [selected]="widgetInfo.chart.type === 'bar'">Bar</option>
+</select>
+
+<!-- Chart position -->
+<label for="chart-position" translate style="margin-top: 25px;">
+      Chart position
+</label>
+<select class="form-control" name="chart-position" [(ngModel)]="widgetInfo.chart.position" (change)="updateConfig()" [disabled]="widgetInfo.chart.enabled === 'false'">
+      <option value = "bottom" [selected]="widgetInfo.chart.position === 'bottom'">Bottom</option>
+      <option value = "right" [selected]="widgetInfo.chart.position === 'right'">Right</option>
 </select>
 
 <!-- Chart height -->
@@ -104,14 +122,14 @@
       Chart height (in pixels)
       </label>
 <input type="number" name="chart-height" id="chart-height" class="form-control"
-      (change)="updateConfig()" [(ngModel)]="widgetInfo.chart.height"/>
+      (change)="updateConfig()" [(ngModel)]="widgetInfo.chart.height" [disabled]="widgetInfo.chart.enabled === 'false'" />
 
 <!-- Chart color -->
 <label for="chart-color" translate style="margin-top: 25px;">
       Chart color (in hex)
       </label>
 <input type="text" name="chart-color" id="chart-color" class="form-control"
-      (change)="updateConfig()" [(ngModel)]="widgetInfo.chart.color" (click)="openChartColorPicker()" />
+      (change)="updateConfig()" [(ngModel)]="widgetInfo.chart.color" (click)="openChartColorPicker()" [disabled]="widgetInfo.chart.enabled === 'false'" />
 <app-color-picker [ngClass]="chartColorPickerClosed? 'hideColorPicker' : 'showColorPicker'" (colorPickerClosed)="closeChartColorPicker()" (colorSet)="setSelectedColorForChart($event)"></app-color-picker>
 
 <!-- Chart aggregation type -->
@@ -120,10 +138,10 @@
 </label>
 <div class="row">
       <div class="col-lg-2">
-            <input type="radio" name="chart-aggregation-type" value="interval" [(ngModel)]="widgetInfo.chart.aggregation.type" style="margin-right: 5px;" />Interval
+            <input type="radio" name="chart-aggregation-type" value="interval" [(ngModel)]="widgetInfo.chart.aggregation.type" style="margin-right: 5px;" [disabled]="widgetInfo.chart.enabled === 'false'" />Interval
       </div>
       <div class="col-lg-2">
-            <input type="radio" name="chart-aggregation-type" value="count" [(ngModel)]="widgetInfo.chart.aggregation.type" style="margin-right: 5px;" />Count
+            <input type="radio" name="chart-aggregation-type" value="count" [(ngModel)]="widgetInfo.chart.aggregation.type" style="margin-right: 5px;" [disabled]="widgetInfo.chart.enabled === 'false'" />Count
       </div>
 </div>
 
@@ -132,7 +150,7 @@
       <label for="chart-aggregation-interval" translate style="margin-top: 25px;">
             Chart aggregation interval (max. 2000 measurements considered)
             </label>
-      <select class="form-control" name="chart-aggregation-interval" [(ngModel)]="widgetInfo.chart.aggregation.interval" (change)="updateConfig()">
+      <select class="form-control" name="chart-aggregation-interval" [(ngModel)]="widgetInfo.chart.aggregation.interval" (change)="updateConfig()" [disabled]="widgetInfo.chart.enabled === 'false'">
             <option value = "hourly" [selected]="widgetInfo.chart.aggregation.interval === 'hourly'">Hourly</option>
             <option value = "daily" [selected]="widgetInfo.chart.aggregation.interval === 'daily'">Daily</option>
             <option value = "weekly" [selected]="widgetInfo.chart.aggregation.interval === 'weekly'">Weekly</option>
@@ -146,7 +164,7 @@
             Chart aggregation count (max. 2000 measurements considered)
             </label>
       <input type="number" name="chart-aggregation-count" id="chart-aggregation-count" class="form-control"
-            (change)="updateConfig()" [(ngModel)]="widgetInfo.chart.aggregation.count" />
+            (change)="updateConfig()" [(ngModel)]="widgetInfo.chart.aggregation.count" [disabled]="widgetInfo.chart.enabled === 'false'" />
 </ng-container>
 
 

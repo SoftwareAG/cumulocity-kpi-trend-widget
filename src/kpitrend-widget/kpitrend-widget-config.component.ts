@@ -67,7 +67,9 @@ export class KPITrendWidgetConfig implements OnInit {
       }
     },
     chart: {
+      enabled: 'true',
       type: 'line',
+      position: 'bottom',
       height: 100,
       aggregation: {
         type: 'interval',
