@@ -37,8 +37,10 @@ This widget shows a current measurement value in realtime and a chart based on m
 10. `KPI color` is the custom color you may want to specify. Clicking this field opens a color picker to help you selecting a color.
 11. `KPI unit` is a unit value you to specify. Providing this value override the value received with measurement. Leave blank if you don't want to override. Examples: km, m, kg, etc.
 12. `KPI threshold enabled` and its related fields allows you to configure threshold values. KPI will change its color on reaching the threshold values.
-13. `Chart type` is the type of the chart you want to see. There are 2 options line and bar.
-14. `Chart height` is the height of the chart you want to configure in pixels.
+13. `Chart enabled` is to show or hide chart in the widget.
+14. `Chart type` is the type of the chart you want to see. There are 2 options line and bar.
+15. `Chart position` decides where to chart in the widget with respect to the KPI.
+15. `Chart height` is the height of the chart you want to configure in pixels.
 15. `Chart color` is the color of the chart you want to see. Clicking this field opens a color picker.
 16. `Chart aggregation type` is whether you want to retrieve the measurement to be plotted on the chart based on the interval or the custom number.
 17. Click `Save` to add the widget on the dashboard.
