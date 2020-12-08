@@ -113,6 +113,7 @@ export class KPITrendWidget implements OnInit, AfterViewInit {
 
   private creationTimestamp: number;
   private datetimeFormat: string = 'yyyy-MM-ddTHH:mm:ssZ';
+  private maxPageSize: number = 2000;
 
   private device: Device = {
     id: ''
@@ -380,9 +381,12 @@ export class KPITrendWidget implements OnInit, AfterViewInit {
 
     // Get Chart Aggregation Count
     this.chart.aggregation.count = _.get(this.config, 'customwidgetdata.chart.aggregation.count');
-    if(this.chart.aggregation.count === undefined || this.chart.aggregation.count < 1) {
+    if(this.chart.aggregation.count === undefined || this.chart.aggregation.count < 1 || this.chart.aggregation.count) {
       console.log("Chart aggregation count is blank or less than 1. Will be using the defaut value of 100.");
       this.chart.aggregation.count = 100;
+    } else if(this.chart.aggregation.count > this.maxPageSize) {
+      console.log("Chart aggregation count is greater than max page size allowed. Setting to 2000.");
+      this.chart.aggregation.count = this.maxPageSize;
     }
 
     // Set KPI Start and End Datetime
@@ -392,7 +396,7 @@ export class KPITrendWidget implements OnInit, AfterViewInit {
     if(this.validation.measurement) {
 
       // Get measurements for to calculate KPI
-      const kpiMeasurementResponse: any = await this.getMeasurementsByDate(this.device.id, this.measurement.fragment, this.measurement.series, this.kpi.aggregation.interval.startDatetime, this.kpi.aggregation.interval.endDatetime);
+      const kpiMeasurementResponse: any = await this.getMeasurementsByDate(this.device.id, this.measurement.fragment, this.measurement.series, this.kpi.aggregation.interval.startDatetime, this.kpi.aggregation.interval.endDatetime, this.maxPageSize);
 
       // Calculate KPI information if the measurement response is not empty
       if(kpiMeasurementResponse.data[0] !== undefined) {
@@ -423,28 +427,21 @@ export class KPITrendWidget implements OnInit, AfterViewInit {
       if(this.chart.enabled === 'true') {
         
         let chartMeasurementResponse: any;
-        let chartDatapointCount: number = 0;
         // Get measurements to show the chart
         if(this.chart.aggregation.type === "count") {
-          chartMeasurementResponse = await this.getMeasurements(this.device.id, this.measurement.fragment, this.measurement.series);
-          chartDatapointCount = this.chart.aggregation.count;
+          chartMeasurementResponse = await this.getMeasurements(this.device.id, this.measurement.fragment, this.measurement.series, this.chart.aggregation.count);
         } else {
           if(this.kpi.aggregation.interval.name === this.chart.aggregation.interval.name) {
             chartMeasurementResponse = kpiMeasurementResponse;
-            chartDatapointCount = chartMeasurementResponse.data.length;
           } else {
-            chartMeasurementResponse = await this.getMeasurementsByDate(this.device.id, this.measurement.fragment, this.measurement.series, this.kpi.aggregation.interval.startDatetime, this.kpi.aggregation.interval.endDatetime);
-            chartDatapointCount = chartMeasurementResponse.data.length;
+            chartMeasurementResponse = await this.getMeasurementsByDate(this.device.id, this.measurement.fragment, this.measurement.series, this.kpi.aggregation.interval.startDatetime, this.kpi.aggregation.interval.endDatetime, this.maxPageSize);
           }
         }
   
         // Show chart if the measurement response is not empty
         if(chartMeasurementResponse.data[0] !== undefined) {
-          if(chartMeasurementResponse.data.length < chartDatapointCount) {
-            chartDatapointCount = chartMeasurementResponse.data.length;
-          }
   
-          for(let i=0; i<chartDatapointCount; i++) {
+          for(let i=chartMeasurementResponse.data.length-1; i>0; i--) {
             this.chart.data.points.push(chartMeasurementResponse.data[i][this.measurement.fragment][this.measurement.series].value);
             this.chart.data.labels.push(chartMeasurementResponse.data[i].time);
           }
@@ -572,25 +569,28 @@ export class KPITrendWidget implements OnInit, AfterViewInit {
     return stats;
   }
 
-  private async getMeasurementsByDate(deviceId: string, measurementFragment: string, measurementSeries: string, dateFrom: Date, dateTo: Date): Promise<any> {
+  private async getMeasurementsByDate(deviceId: string, measurementFragment: string, measurementSeries: string, dateFrom: Date, dateTo: Date, pageSize: number): Promise<any> {
     const filter = {
       source: deviceId,
       dateFrom: formatDate(dateFrom, this.datetimeFormat, 'en'),
       dateTo: formatDate(dateTo, this.datetimeFormat, 'en'),
       valueFragmentType: measurementFragment,
       valueFragmentSeries: measurementSeries,
-      pageSize: 2000
+      pageSize: pageSize,
+      revert: true
     }
     const resp = await this.measurementService.list(filter);
     return resp;
   }
 
-  private async getMeasurements(deviceId: string, measurementFragment: string, measurementSeries: string): Promise<any> {
+  private async getMeasurements(deviceId: string, measurementFragment: string, measurementSeries: string, pageSize: number): Promise<any> {
     const filter = {
       source: deviceId,
+      dateTo: formatDate(new Date(), this.datetimeFormat, 'en'),
       valueFragmentType: measurementFragment,
       valueFragmentSeries: measurementSeries,
-      pageSize: 2000
+      pageSize: pageSize,
+      revert: true
     }
     const resp = await this.measurementService.list(filter);
     return resp;
