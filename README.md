@@ -1,4 +1,4 @@
-# Cumulocity IoT KPI Trend Widget [<img width="35" src="/assets/icon-download.png"/>](https://github.com/SoftwareAG/cumulocity-kpi-trend-widget/releases/download/v1.0/kpitrend-widget.zip)
+# Cumulocity IoT KPI Trend Widget [<img width="35" src="/assets/icon-download.png"/>](https://github.com/SoftwareAG/cumulocity-kpi-trend-widget/releases/download/v1.0.0/kpitrend-widget-1.0.0.zip)
 
 This widget shows a current measurement value in realtime and a chart based on measurement values as datapoints.
 
@@ -12,7 +12,7 @@ This widget shows a current measurement value in realtime and a chart based on m
 * Supports different chart types.
 
 ### Installation - for the dashboards using Runtime Widget Loader
-1. Download the latest `kpitrend-widget.zip` file from the Releases section.
+1. Download the latest `kpitrend-widget-{version}.zip` file from the Releases section.
 2. Make sure you have Runtime Widget Loader installed on your Cockpit or App Builder app.
 3. Open a dashboard.
 4. Click `more...`.
