@@ -381,7 +381,7 @@ export class KPITrendWidget implements OnInit, AfterViewInit {
 
     // Get Chart Aggregation Count
     this.chart.aggregation.count = _.get(this.config, 'customwidgetdata.chart.aggregation.count');
-    if(this.chart.aggregation.count === undefined || this.chart.aggregation.count < 1 || this.chart.aggregation.count) {
+    if(this.chart.aggregation.count === undefined || this.chart.aggregation.count < 1) {
       console.log("Chart aggregation count is blank or less than 1. Will be using the defaut value of 100.");
       this.chart.aggregation.count = 100;
     } else if(this.chart.aggregation.count > this.maxPageSize) {
@@ -405,10 +405,10 @@ export class KPITrendWidget implements OnInit, AfterViewInit {
           this.kpi.stats.values.push(kpiMeasurementResponse.data[i][this.measurement.fragment][this.measurement.series].value);
         }
 
-        this.kpi.value = kpiMeasurementResponse.data[kpiMeasurementCount - 1][this.measurement.fragment][this.measurement.series].value;
+        this.kpi.value = kpiMeasurementResponse.data[0][this.measurement.fragment][this.measurement.series].value;
         // Use the unit value from config if provided. otherwise use from the measurement response
         if(this.kpi.unit === undefined || this.kpi.unit.length === 0) {
-          this.kpi.unit = kpiMeasurementResponse.data[kpiMeasurementCount - 1][this.measurement.fragment][this.measurement.series].unit;
+          this.kpi.unit = kpiMeasurementResponse.data[0][this.measurement.fragment][this.measurement.series].unit;
         }
 
         const kpiStats: any = this.calculateStatsForKPI(this.kpi.stats.values, this.kpi.value);
