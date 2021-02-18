@@ -49,13 +49,14 @@ This widget shows a current measurement value in realtime and a chart based on m
 ### Development - to do the enhancements and testing locally
 1. Clone the repository on local machine using `git clone https://github.com/SoftwareAG/cumulocity-kpi-trend-widget.git`.
 2. Run `npm install` to download the module dependencies.
-3. Run `c8ycli server -u https://your_tenant_url` to start the server.
-4. Go to `http://localhost:9000/apps/cockpit/` in the browser to view and test your changes.
-5. (Optional) push the changes back to this repository.
+3. Install c8ycli `npm install -g @c8y/cli` if not already.
+4. Run `c8ycli server -u https://your_tenant_url` to start the server.
+5. Go to `http://localhost:9000/apps/cockpit/` in the browser to view and test your changes.
+6. (Optional) push the changes back to this repository.
 
 ### Build - to create a new build for the Runtime Widget Loader
 1. Finish the development and testing on your local machine.
-2. Run `gulp` to start the build process.
+2. Run `gulp` to start the build process. Run `npm install -g gulp` to install gulp if not already.
 3. Use `widget.zip` file in the `dist` folder as a distribution.
 
 ------------------------------
