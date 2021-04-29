@@ -1,4 +1,4 @@
-# Cumulocity IoT KPI Trend Widget [<img width="35" src="/assets/icon-download.png"/>](https://github.com/SoftwareAG/cumulocity-kpi-trend-widget/releases/download/v1.0.0/kpitrend-widget-1.0.0.zip)
+# KPI Trend Widget for Cumulocity IoT
 
 This widget shows a current measurement value in realtime and a chart based on measurement values as datapoints.
 
@@ -36,7 +36,7 @@ This widget shows a current measurement value in realtime and a chart based on m
 9. `KPI aggregation interval` is an interval to choose the measurements from to calculate the KPI.
 10. `KPI color` is the custom color you may want to specify. Clicking this field opens a color picker to help you selecting a color.
 11. `KPI unit` is a unit value you to specify. Providing this value override the value received with measurement. Leave blank if you don't want to override. Examples: km, m, kg, etc.
-12. `KPI threshold enabled` and its related fields allows you to configure threshold values. KPI will change its color on reaching the threshold values.
+12. `KPI threshold enabled` and its related fields allows you to configure threshold values. KPI will change its color on reaching the threshold values. Threshold values are inclusive.
 13. `Chart enabled` is to show or hide chart in the widget.
 14. `Chart type` is the type of the chart you want to see. There are 2 options line and bar.
 15. `Chart position` decides where to chart in the widget with respect to the KPI.
