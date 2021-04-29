@@ -471,8 +471,8 @@ export class KPITrendWidget implements OnInit, AfterViewInit {
           this.kpi.stats.percentage = kpiStats.percentage;
           this.kpi.stats.text = this.calculateKPIText(this.kpi.stats.average, this.kpi.value, this.kpi.aggregation.interval.name);
 
-          if(this.kpi.threshold.enabled) {
-            this.calculateKPIThresholdColor();
+          if(this.validation.kpi.threshold && this.kpi.threshold.enabled === 'true') {
+            this.kpi.color = this.calculateKPIThresholdColor();
           }
           
           // Chart is enabled
