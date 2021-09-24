@@ -17,7 +17,7 @@
 */
 
 import { formatDate } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MeasurementService, Realtime } from '@c8y/ngx-components/api';
 import * as _ from 'lodash';
 import { Chart } from 'chart.js';
@@ -108,12 +108,14 @@ interface Chart {
   templateUrl: './kpitrend-widget.component.html',
   styles: []
 })
-export class KPITrendWidget implements OnInit, AfterViewInit {
+export class KPITrendWidget implements OnInit, AfterViewInit, OnDestroy {
   @Input() config;
 
   private creationTimestamp: number;
   private datetimeFormat: string = 'yyyy-MM-ddTHH:mm:ssZ';
   private maxPageSize: number = 2000;
+
+  private subs: object;
 
   private device: Device = {
     id: ''
@@ -452,7 +454,7 @@ export class KPITrendWidget implements OnInit, AfterViewInit {
       }
 
       // Subscribe to reatime measurements
-      this.realtimeService.subscribe('/measurements/'+this.device.id, (data) => {
+      this.subs = this.realtimeService.subscribe('/measurements/'+this.device.id, (data) => {
         if(_.has(data.data.data[this.measurement.fragment], [this.measurement.series])) {
 
           this.kpi.stats.values.push(this.kpi.value);
@@ -765,6 +767,12 @@ export class KPITrendWidget implements OnInit, AfterViewInit {
   // Get Chart Position
   public getChartPosition(): string {
     return this.chart.position;
+  }
+
+  ngOnDestroy() {
+    if(this.subs !== undefined && this.subs !== null) {
+      this.realtimeService.unsubscribe(this.subs);
+    }
   }
 
 }
