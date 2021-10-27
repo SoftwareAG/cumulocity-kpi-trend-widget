@@ -16,7 +16,7 @@
 * limitations under the License.
 */
 
-import { formatDate } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MeasurementService, Realtime } from '@c8y/ngx-components/api';
 import * as _ from 'lodash';
@@ -199,7 +199,7 @@ export class KPITrendWidget implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // constructor()
-  constructor(private measurementService: MeasurementService, private realtimeService: Realtime, private elementRef: ElementRef) {}
+  constructor(private measurementService: MeasurementService, private realtimeService: Realtime, private elementRef: ElementRef, private datePipe: DatePipe) {}
   
   // ngOnInit()
   async ngOnInit(): Promise<void> {
@@ -445,7 +445,7 @@ export class KPITrendWidget implements OnInit, AfterViewInit, OnDestroy {
   
           for(let i=chartMeasurementResponse.data.length-1; i>0; i--) {
             this.chart.data.points.push(chartMeasurementResponse.data[i][this.measurement.fragment][this.measurement.series].value);
-            this.chart.data.labels.push(chartMeasurementResponse.data[i].time);
+            this.chart.data.labels.push(this.convertDateForTooltip(chartMeasurementResponse.data[i].time));
           }
   
           // Show the Chart in the widget
@@ -481,7 +481,7 @@ export class KPITrendWidget implements OnInit, AfterViewInit, OnDestroy {
           if(this.chart.enabled === 'true') {
             // Update Chart with this new realtime measurement received
             this.chart.data.points.push(this.kpi.value);
-            this.chart.data.labels.push(data.data.data.time);
+            this.chart.data.labels.push(this.convertDateForTooltip(data.data.data.time));
             if(this.chart.aggregation.type === "count") {
               if(this.chart.data.points.length > this.chart.aggregation.count) {
                 this.chart.data.points.shift();
@@ -684,6 +684,10 @@ export class KPITrendWidget implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     });
+  }
+
+  private convertDateForTooltip(datetime) {
+    return this.datePipe.transform(datetime, 'dd MMM yyyy, hh:mm:ss');
   }
 
   private calculateKPIThresholdColor(): string {

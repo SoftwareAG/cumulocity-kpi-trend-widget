@@ -19,6 +19,7 @@ import { ChartsModule } from 'ng2-charts';
 import { ColorPaletteComponent } from './src/kpitrend-widget/color-picker/color-palette/color-palette-component';
 import { ColorSliderComponent } from './src/kpitrend-widget/color-picker/color-slider/color-slider-component';
 import { ColorPickerComponent } from './src/kpitrend-widget/color-picker/color-picker-component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   imports: [
@@ -49,7 +50,7 @@ import { ColorPickerComponent } from './src/kpitrend-widget/color-picker/color-p
         previewImage: require("./assets/img-preview.png")
       }
     ]
-  }],
+  }, DatePipe],
 })
 export class AppModule extends HybridAppModule {
   constructor(protected upgrade: NgUpgradeModule) {

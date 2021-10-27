@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ColorPickerComponent } from './color-picker/color-picker-component';
 import { ColorSliderComponent } from './color-picker/color-slider/color-slider-component';
 import { ColorPaletteComponent } from './color-picker/color-palette/color-palette-component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   imports: [
@@ -28,6 +29,6 @@ import { ColorPaletteComponent } from './color-picker/color-palette/color-palett
       configComponent: KPITrendWidgetConfig,
       previewImage: require("~assets/img-preview.png")
     }
-  }],
+  }, DatePipe],
 })
 export class KPITrendWidgetAppModule {}
