@@ -83,13 +83,18 @@ export class KPITrendWidgetConfig implements OnInit {
   constructor(private fetchClient: FetchClient) {}
 
   async ngOnInit() {
-    // Editing an existing widget
-    if(_.has(this.config, 'customwidgetdata')) {
-      this.loadFragmentSeries();
-      this.widgetInfo = _.get(this.config, 'customwidgetdata');
-    } else { // Adding a new widget
-      _.set(this.config, 'customwidgetdata', this.widgetInfo);
+    try {
+      // Editing an existing widget
+      if(_.has(this.config, 'customwidgetdata')) {
+        this.loadFragmentSeries();
+        this.widgetInfo = _.get(this.config, 'customwidgetdata');
+      } else { // Adding a new widget
+        _.set(this.config, 'customwidgetdata', this.widgetInfo);
+      }
+    } catch(e) {
+      console.log("KPI Trend - "+e);
     }
+    
   }
 
   public updateIconInConfig($event: Event) {

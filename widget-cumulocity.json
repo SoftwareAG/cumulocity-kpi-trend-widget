@@ -7,7 +7,12 @@
       "class": "fa fa-puzzle-piece"
     },
     "manifest": {
-      "noAppSwitcher": true
+      "noAppSwitcher": true,
+      "requiredPlatformVersion": "“>=1010.0.4",
+      "version":"1.0.4",
+      "author":"Software AG, Global Presales",
+      "description":"Cumulocity IoT KPI Trend Widget",
+      "license": "Apache 2.0"
     }
   }
   
