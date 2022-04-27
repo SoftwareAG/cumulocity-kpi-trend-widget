@@ -699,7 +699,7 @@ export class KPITrendWidget implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private convertDateForTooltip(datetime) {
-    return this.datePipe.transform(datetime, 'dd MMM yyyy, hh:mm:ss');
+    return this.datePipe.transform(datetime, 'dd MMM yyyy, HH:mm:ss');
   }
 
   private calculateKPIThresholdColor(): string {
