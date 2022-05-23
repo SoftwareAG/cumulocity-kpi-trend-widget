@@ -4,21 +4,21 @@ This widget shows a current measurement value in realtime and a chart based on m
 
 <img src="/assets/img-preview.png" />
 
-### Features
+## Features
 * Supports measurements from a single device
 * Allows color customization for KPI and the trend chart.
 * Allows to configure threshold values and do color customization.
 * Allows to upload custom image to represent the KPI.
 * Supports different chart types.
 
-### Installation - for the dashboards using Runtime Widget Loader
+## Installation - for the dashboards using Runtime Widget Loader
 1. Download the latest `kpitrend-widget-{version}.zip` file from the Releases section.
 2. Make sure you have Runtime Widget Loader installed on your Cockpit or App Builder app.
 3. Open a dashboard.
 4. Click `more...`.
 5. Select `Install Widget` and follow the instructions.
 
-### Deployment - as part of the Cumulocity IoT Cockpit application
+## Deployment - as part of the Cumulocity IoT Cockpit application
 1. Clone the repository on your local machine using `git clone https://github.com/SoftwareAG/cumulocity-kpi-trend-widget.git`.
 2. Run `npm install` to install the module dependencies.
 3. Run `c8ycli build` to build the cockpit application.
@@ -46,7 +46,7 @@ This widget shows a current measurement value in realtime and a chart based on m
 17. Click `Save` to add the widget on the dashboard.
 18. In case you see unexpected results on the widget, refer to browser console to see if there are error logs.
 
-### Development - to do the enhancements and testing locally
+## Development - to do the enhancements and testing locally
 1. Clone the repository on local machine using `git clone https://github.com/SoftwareAG/cumulocity-kpi-trend-widget.git`.
 2. Run `npm install` to download the module dependencies.
 3. Install c8ycli `npm install -g @c8y/cli` if not already.
@@ -54,7 +54,7 @@ This widget shows a current measurement value in realtime and a chart based on m
 5. Go to `http://localhost:9000/apps/cockpit/` in the browser to view and test your changes.
 6. (Optional) push the changes back to this repository.
 
-### Build - to create a new build for the Runtime Widget Loader
+## Build - to create a new build for the Runtime Widget Loader
 1. Finish the development and testing on your local machine.
 2. Run `gulp` to start the build process. Run `npm install -g gulp` to install gulp if not already.
 3. Use `widget.zip` file in the `dist` folder as a distribution.
