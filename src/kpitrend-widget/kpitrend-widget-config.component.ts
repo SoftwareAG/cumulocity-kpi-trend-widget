@@ -48,6 +48,7 @@ export class KPITrendWidgetConfig implements OnInit {
       color: '#b0b0b0',
       unit: '',
       aggregation: {
+        enabled: 'true',
         interval: 'hourly'
       },
       threshold: {
@@ -88,6 +89,11 @@ export class KPITrendWidgetConfig implements OnInit {
       if(_.has(this.config, 'customwidgetdata')) {
         this.loadFragmentSeries();
         this.widgetInfo = _.get(this.config, 'customwidgetdata');
+        // This field is added later and old widget users might get undefined value
+        if(this.widgetInfo.kpi.aggregation.enabled === undefined || this.widgetInfo.kpi.aggregation.enabled === null || this.widgetInfo.kpi.aggregation.enabled === "" ) {
+          this.widgetInfo.kpi.aggregation.enabled = "true";
+          this.updateConfig();
+        }
       } else { // Adding a new widget
         _.set(this.config, 'customwidgetdata', this.widgetInfo);
       }

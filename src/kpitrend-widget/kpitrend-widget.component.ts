@@ -58,6 +58,7 @@ interface KPI {
     }
   },
   aggregation: {
+    enabled: string,
     interval: {
       name: string,
       startDatetime: Date,
@@ -153,6 +154,7 @@ export class KPITrendWidget implements OnInit, AfterViewInit, OnDestroy {
       enabled: ''
     },
     aggregation: {
+      enabled: '',
       interval: {
         name: '',
         endDatetime: new Date(),
@@ -326,6 +328,13 @@ export class KPITrendWidget implements OnInit, AfterViewInit, OnDestroy {
 
       }
 
+      // Get KPI Aggregation Enabled
+      this.kpi.aggregation.enabled = _.get(this.config, 'customwidgetdata.kpi.aggregation.enabled');
+      if(this.kpi.aggregation.enabled === undefined || this.kpi.aggregation.enabled === '') {
+        console.log("KPI Aggregation enabled is undefined. Setting it to its defaut as true.");
+        this.kpi.aggregation.enabled = 'true';
+      }
+
       // Get KPI Aggregation Interval
       this.kpi.aggregation.interval.name = _.get(this.config, 'customwidgetdata.kpi.aggregation.interval');
       if(this.kpi.aggregation.interval.name === undefined || this.kpi.aggregation.interval.name.length === 0) {
@@ -403,10 +412,6 @@ export class KPITrendWidget implements OnInit, AfterViewInit, OnDestroy {
 
         // Calculate KPI information if the measurement response is not empty
         if(kpiMeasurementResponse.data[0] !== undefined) {
-          let kpiMeasurementCount = kpiMeasurementResponse.data.length;
-          for(let i=0; i<kpiMeasurementCount-2; i++) {
-            this.kpi.stats.values.push(kpiMeasurementResponse.data[i][this.measurement.fragment][this.measurement.series].value);
-          }
 
           this.kpi.value = kpiMeasurementResponse.data[0][this.measurement.fragment][this.measurement.series].value;
           // Use the unit value from config if provided. otherwise use from the measurement response
@@ -414,12 +419,19 @@ export class KPITrendWidget implements OnInit, AfterViewInit, OnDestroy {
             this.kpi.unit = kpiMeasurementResponse.data[0][this.measurement.fragment][this.measurement.series].unit;
           }
 
-          const kpiStats: any = this.calculateStatsForKPI(this.kpi.stats.values, this.kpi.value);
-          this.kpi.stats.count = kpiStats.count;
-          this.kpi.stats.sum = kpiStats.sum;
-          this.kpi.stats.average = kpiStats.average;
-          this.kpi.stats.percentage = kpiStats.percentage;
-          this.kpi.stats.text = this.calculateKPIText(this.kpi.stats.average, this.kpi.value, this.kpi.aggregation.interval.name);
+          if(this.kpi.aggregation.enabled === "true") {
+            let kpiMeasurementCount = kpiMeasurementResponse.data.length;
+            for(let i=0; i<kpiMeasurementCount-2; i++) {
+              this.kpi.stats.values.push(kpiMeasurementResponse.data[i][this.measurement.fragment][this.measurement.series].value);
+            }
+
+            const kpiStats: any = this.calculateStatsForKPI(this.kpi.stats.values, this.kpi.value);
+            this.kpi.stats.count = kpiStats.count;
+            this.kpi.stats.sum = kpiStats.sum;
+            this.kpi.stats.average = kpiStats.average;
+            this.kpi.stats.percentage = kpiStats.percentage;
+            this.kpi.stats.text = this.calculateKPIText(this.kpi.stats.average, this.kpi.value, this.kpi.aggregation.interval.name);
+          }
 
           if(this.validation.kpi.threshold) {
             this.kpi.color = this.calculateKPIThresholdColor();
@@ -458,8 +470,6 @@ export class KPITrendWidget implements OnInit, AfterViewInit, OnDestroy {
         this.subs = this.realtimeService.subscribe('/measurements/'+this.device.id, (data) => {
           try {
             if(_.has(data.data.data[this.measurement.fragment], [this.measurement.series])) {
-
-              this.kpi.stats.values.push(this.kpi.value);
               
               // Update the KPI informaton with this new realtime measurement received
               this.kpi.value = data.data.data[this.measurement.fragment][this.measurement.series].value;
@@ -468,12 +478,15 @@ export class KPITrendWidget implements OnInit, AfterViewInit, OnDestroy {
                 this.kpi.unit = data.data.data[this.measurement.fragment][this.measurement.series].unit;
               }
               
-              const kpiStats = this.calculateStatsForKPI(this.kpi.stats.values, this.kpi.value);
-              this.kpi.stats.count = kpiStats.count;
-              this.kpi.stats.sum = kpiStats.sum;
-              this.kpi.stats.average = kpiStats.average;
-              this.kpi.stats.percentage = kpiStats.percentage;
-              this.kpi.stats.text = this.calculateKPIText(this.kpi.stats.average, this.kpi.value, this.kpi.aggregation.interval.name);
+              if(this.kpi.aggregation.enabled === 'true') {
+                this.kpi.stats.values.push(this.kpi.value);
+                const kpiStats = this.calculateStatsForKPI(this.kpi.stats.values, this.kpi.value);
+                this.kpi.stats.count = kpiStats.count;
+                this.kpi.stats.sum = kpiStats.sum;
+                this.kpi.stats.average = kpiStats.average;
+                this.kpi.stats.percentage = kpiStats.percentage;
+                this.kpi.stats.text = this.calculateKPIText(this.kpi.stats.average, this.kpi.value, this.kpi.aggregation.interval.name);
+              }
   
               if(this.validation.kpi.threshold && this.kpi.threshold.enabled === 'true') {
                 this.kpi.color = this.calculateKPIThresholdColor();
@@ -783,6 +796,11 @@ export class KPITrendWidget implements OnInit, AfterViewInit, OnDestroy {
   // Get Chart Position
   public getChartPosition(): string {
     return this.chart.position;
+  }
+
+  // Get KPI Enabled 
+  public kpiAggregationEnabled() {
+    return this.kpi.aggregation.enabled;
   }
 
   ngOnDestroy() {

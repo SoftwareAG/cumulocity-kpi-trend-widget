@@ -1,10 +1,10 @@
 <!-- Chart Enabled is False -->
 <ng-container *ngIf="chartEnabled() === 'false'">
-    <div class="col-xs-4" style="text-align: center; height: 90px;">
+    <div class="col-xs-4" style="text-align: center; height: 88px;">
         <span style="display: inline-block; height: 100%; vertical-align: middle;"></span>
         <img style="max-width: 60px; max-height: 60px; vertical-align: middle;" [src]="getKPIIcon()" />
     </div>
-    <div class="col-xs-8" style="height: 90px;">
+    <div class="col-xs-8" style="height: 88px;">
         <!-- KPI title -->
         <p [style.margin-top] = "getKPITitleTopMargin()" style="color: grey; margin-bottom: 5px; text-transform: uppercase; font-weight: bold;">{{getKPITitle()}}</p>
         
@@ -12,17 +12,20 @@
         <p [style.color] = "getKPIColor()"><span style="font-weight: bold; font-size: 2.5em;">{{getKPIValue() | number : '1.0-2'}}</span> <span style="font-size: 2.5em;">{{getKPIUnit()}}</span></p>
         
         <!-- KPI text -->
-        <p style="color: grey; text-transform: lowercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{getKPIPercentage() | number: '1.2-2'}} {{getKPIText()}}</p>
+        <ng-container *ngIf="kpiAggregationEnabled() === 'true'">
+            <p style="color: grey; text-transform: lowercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{getKPIPercentage() | number: '1.2-2'}} {{getKPIText()}}</p>
+        </ng-container>
+        
     </div>
 </ng-container>
 
 <!-- Chart Enabled is True and Chart Position is Bottom -->
 <ng-container *ngIf="chartEnabled() === 'true' && getChartPosition() === 'bottom'">
-    <div class="col-xs-4" style="text-align: center; height: 90px;">
+    <div class="col-xs-4" style="text-align: center; height: 88px;">
         <span style="display: inline-block; height: 100%; vertical-align: middle;"></span>
         <img style="max-width: 60px; max-height: 60px; vertical-align: middle;" [src]="getKPIIcon()" />
     </div>
-    <div class="col-xs-8" style="height: 90px;">
+    <div class="col-xs-8" style="height: 88px;">
         <!-- KPI title -->
         <p [style.margin-top] = "getKPITitleTopMargin()" style="color: grey; margin-bottom: 5px; text-transform: uppercase; font-weight: bold;">{{getKPITitle()}}</p>
         
@@ -30,7 +33,9 @@
         <p [style.color] = "getKPIColor()"><span style="font-weight: bold; font-size: 2.5em;">{{getKPIValue() | number : '1.0-2'}}</span> <span style="font-size: 2.5em;">{{getKPIUnit()}}</span></p>
         
         <!-- KPI text -->
-        <p style="color: grey; text-transform: lowercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{getKPIPercentage() | number: '1.2-2'}} {{getKPIText()}}</p>
+        <ng-container *ngIf="kpiAggregationEnabled() === 'true'">
+            <p style="color: grey; text-transform: lowercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{getKPIPercentage() | number: '1.2-2'}} {{getKPIText()}}</p>
+        </ng-container>
     </div>
     <!-- Chart -->
     <div class="col-xs-12" style="margin-top: 25px;">
@@ -54,7 +59,9 @@
             <p [style.color] = "getKPIColor()"><span style="font-weight: bold; font-size: 2.5em;">{{getKPIValue() | number : '1.0-2'}}</span> <span style="font-size: 2.5em;">{{getKPIUnit()}}</span></p>
             
             <!-- KPI text -->
-            <p style="color: grey; text-transform: lowercase;">{{getKPIPercentage() | number: '1.2-2'}} {{getKPIText()}}</p>
+            <ng-container *ngIf="kpiAggregationEnabled() === 'true'">
+                <p style="color: grey; text-transform: lowercase;">{{getKPIPercentage() | number: '1.2-2'}} {{getKPIText()}}</p>
+            </ng-container>
         </div>
     </div>
     <div class="col-xs-6" style="margin-top: 25px;">

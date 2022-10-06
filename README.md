@@ -33,18 +33,19 @@ This widget shows a current measurement value in realtime and a chart based on m
 6. `KPI title` is the name of the KPI you want to show. Example: Temperature, Humidity.
 7. `Upload KPI icon` allows you to upload relevant icon. Icon should be a image format like .png, jpg, etc.
 8. `Measurement` allows you to choose the Fragment and Series combined. It automatically gets populated based on the device selected.
-9. `KPI aggregation interval` is an interval to choose the measurements from to calculate the KPI.
-10. `KPI color` is the custom color you may want to specify. Clicking this field opens a color picker to help you selecting a color.
-11. `KPI unit` is a unit value you to specify. Providing this value override the value received with measurement. Leave blank if you don't want to override. Examples: km, m, kg, etc.
-12. `KPI threshold enabled` and its related fields allows you to configure threshold values. KPI will change its color on reaching the threshold values. Threshold values are inclusive.
-13. `Chart enabled` is to show or hide chart in the widget.
-14. `Chart type` is the type of the chart you want to see. There are 2 options line and bar.
-15. `Chart position` decides where to chart in the widget with respect to the KPI.
-15. `Chart height` is the height of the chart you want to configure in pixels.
-15. `Chart color` is the color of the chart you want to see. Clicking this field opens a color picker.
-16. `Chart aggregation type` is whether you want to retrieve the measurement to be plotted on the chart based on the interval or the custom number.
-17. Click `Save` to add the widget on the dashboard.
-18. In case you see unexpected results on the widget, refer to browser console to see if there are error logs.
+9. `KPI color` is the custom color you may want to specify. Clicking this field opens a color picker to help you selecting a color.
+10. `KPI unit` is a unit value you to specify. Providing this value override the value received with measurement. Leave blank if you don't want to override. Examples: km, m, kg, etc.
+11. `KPI aggregation enabled` is to calculate and show the percentage tend text statement or not.
+12. `KPI aggregation interval` is an interval to choose the measurements from to calculate the KPI.
+13. `KPI threshold enabled` and its related fields allows you to configure threshold values. KPI will change its color on reaching the threshold values. Threshold values are inclusive.
+14. `Chart enabled` is to show or hide chart in the widget.
+15. `Chart type` is the type of the chart you want to see. There are 2 options line and bar.
+16. `Chart position` decides where to chart in the widget with respect to the KPI.
+17. `Chart height` is the height of the chart you want to configure in pixels.
+18. `Chart color` is the color of the chart you want to see. Clicking this field opens a color picker.
+19. `Chart aggregation type` is whether you want to retrieve the measurement to be plotted on the chart based on the interval or the custom number.
+20. Click `Save` to add the widget on the dashboard.
+21. In case you see unexpected results on the widget, refer to browser console to see if there are error logs.
 
 ## Development - to do the enhancements and testing locally
 1. Clone the repository on local machine using `git clone https://github.com/SoftwareAG/cumulocity-kpi-trend-widget.git`.
