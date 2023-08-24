@@ -4,6 +4,7 @@ This widget shows a current measurement value in realtime and a chart based on m
 
 <img src="/assets/img-preview.png" />
 
+> ### ⚠️ This project is no longer under development. Please use [Cumulocity KPI Trend Widget Plugin](https://github.com/SoftwareAG/cumulocity-kpi-trend-widget-plugin) for Application Builder >=2.x.x and Cumulocity >=1016.x.x⚠️
 ## Features
 * Supports measurements from a single device
 * Allows color customization for KPI and the trend chart.
